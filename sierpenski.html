@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sierpinsky</title>
+	<style type="text/css">
+		body { text-align: center; }
+		canvas { border: 1px solid grey; }
+	</style>
+	<script>
+		var Point = function(x, y) {
+			this.x = x;
+			this.y = y;
+		};
+
+		var Sierpinsky = function (canvas) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.height = canvas.height;
+			this.width = canvas.width;
+		}
+		Sierpinsky.prototype = {
+			
+			drawTriangle: function(a, b, c) {
+				this.ctx.beginPath();
+				this.ctx.moveTo(a.x, a.y);
+				this.ctx.lineTo(b.x, b.y);
+				this.ctx.lineTo(c.x, c.y);
+				this.ctx.fill();
+				console.log("drawTriangle("+a.x+","+a.y+","+b.x+","+b.y+","+c.x+","+c.y+");");
+			},
+
+			getMiddle: function(a, b) {
+				return new Point((a.x + b.x) / 2, (a.y + b.y) / 2);
+			},
+
+			recurse: function(a, b, c, recursion) {
+				if (recursion <= 0)
+					return;
+
+				var _a = this.getMiddle(a, b),
+					_b = this.getMiddle(b, c),
+					_c = this.getMiddle(c, a);
+
+				this.drawTriangle(_a, _b, _c);
+
+				recursion--;
+
+				this.recurse(a, _a, _c, recursion);
+				this.recurse(_c, _b, c, recursion);
+				this.recurse(_a, b, _b, recursion);
+			},
+
+			draw: function() {
+				var a = new Point(this.width/2, 0),
+					b = new Point(this.width, this.height),
+					c = new Point(0, this.height);
+				
+				this.ctx.fillStyle = "black";
+				this.drawTriangle(a, b, c);
+
+				this.ctx.fillStyle = "white";
+				this.recurse(a, b, c, 9);
+			}
+
+		}
+
+		window.addEventListener("load", function() {
+			var s = new Sierpinsky(document.getElementById("canvas"));
+			s.draw();
+		});
+	</script>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="600"></canvas>
+</body>
+</html>
