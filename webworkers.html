@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebWorkers</title>
+	<style type="text/css">
+	</style>
+	<script src="primeResolver.js"></script>
+	<script>
+		Clock = function(element) {
+			this.element = element;
+			this.interval = null;
+		}
+		Clock.prototype = {
+			start: function() {
+				var clock = this;
+				this.interval = setInterval(function() { 	clock.update(); }, 50);
+			},
+			stop: function() {
+				clearInterval(this.interval);
+			},
+			update: function() {
+				var d = new Date();
+				this.element.innerHTML = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + '.' + d.getMilliseconds();
+			}
+		}
+
+		var worker = new Worker('primeResolver.js');
+
+		var primeResolver;
+		var 	begin = 4321948321980,
+				step = 2500,
+				end = begin + step;
+
+		window.addEventListener('load', function() {
+
+			var clock = new Clock(document.getElementById('clock'));
+			clock.start();
+
+			var checkbox = document.getElementById('webworkers');
+
+			checkbox.addEventListener('click', function() {
+
+				var r = document.getElementById('result');
+
+				if (checkbox.checked) {
+
+					r.innerHTML = '<strong>Using WebWorkers:</strong> ';
+					worker.onmessage = function(event) {
+						r.innerHTML += event.data + ' ';
+					}
+					worker.postMessage('{"min":' + begin + ', "max":' + end + '}');
+
+				} else {					
+					r.innerHTML = '<strong>Not Using WebWorkers</strong>: ';
+					primeResolver = new PrimeResolver();
+					primeResolver.searchForPrime(begin, end, function(i) { r.innerHTML += i + ' '; });
+				}
+
+				begin = end;
+				end += step;
+
+			}, false);
+
+		}, false);
+	</script>
+</head>
+<body>
+	<h1>Prime resolver</h1>
+	<p>Clock: <span id="clock"></span></p>
+	<p><label for="webworkers">Use Web Workers ?</label><input type="checkbox" name="webworkers" id="webworkers" /></p>
+	<p id="result"></p>
+</body>
+</html>

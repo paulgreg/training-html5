@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Sierpinsky</title>
+	<title>Sierpinski</title>
 	<style type="text/css">
 		body { text-align: center; }
 		canvas { border: 1px solid grey; }
@@ -12,13 +12,13 @@
 			this.y = y;
 		};
 
-		var Sierpinsky = function (canvas) {
+		var Sierpinski = function (canvas) {
 			this.canvas = canvas;
 			this.ctx = canvas.getContext("2d");
 			this.height = canvas.height;
 			this.width = canvas.width;
 		}
-		Sierpinsky.prototype = {
+		Sierpinski.prototype = {
 			
 			drawTriangle: function(a, b, c) {
 				this.ctx.beginPath();
@@ -64,12 +64,13 @@
 		}
 
 		window.addEventListener("load", function() {
-			var s = new Sierpinsky(document.getElementById("canvas"));
+			var s = new Sierpinski(document.getElementById("canvas"));
 			s.draw();
 		}, false);
 	</script>
 </head>
 <body>
+	<h1>Sierpinski</h1>
 	<canvas id="canvas" width="800" height="600"></canvas>
 </body>
 </html>
