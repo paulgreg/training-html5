@@ -5,107 +5,110 @@
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> 
 	<title>Mandelbrot</title> 
 	<style type="text/css"> 
-		body { text-align: center; }
-		canvas { border: 1px solid grey; }
-	</style> 
-	<script> 
-		var Mandelbrot = function (canvas) {
+		canvas { float: left; margin-right: 1em; }
+	</style>
+	<script>
+		const MAX = 256;
+
+		var Mandelbrot = function (canvas, logs) {
 			this.canvas = canvas;
+			this.logs = logs;
+			this.status = status;
 			this.ctx = canvas.getContext("2d");
 			this.height = canvas.height;
 			this.width = canvas.width;
-			this.x1 = this.X1 = -2.25;
-			this.x2 = this.X2 = 0.75;
-			this.y1 = this.Y1 = -1.5;
-			this.y2 = this.Y2 = 1.5;
-			this.sines = [];
-			this.tanes = [];
-			this.x = [this.width, this.height];
-			this.y = [this.width, this.height];
-			this.dx = 0;
-			this.dy = 0;
+			this.x1 = -2.25;
+			this.x2 = 0.75;
+			this.y1 = -1.5;
+			this.y2 = 1.5;
+			this.colors = [MAX];
 			this.imgData = null;
-			
-			for (i = 0; i < 256; i++) {
-        var a  = Math.PI * 2 * i / 256;
-          this.sines[i] = parseInt((Math.sin(a) * 255));
-          this.tanes[i] = parseInt((Math.tan(a) * 255));
-      }
+
+			for (i = 0; i < MAX; i++) {
+				this.colors[i] = parseInt((Math.sin(Math.PI * 5 * i / MAX) * MAX));
+			}
 		}
 		
 		Mandelbrot.prototype = {
-      draw: function() {
-        this.imgData = this.ctx.createImageData(this.width, this.height);
+			draw: function() {
+				this.imgData = this.ctx.createImageData(this.width, this.height);			
 
-        this.dx = this.x2 - this.x1;
-        this.dy = this.y2 - this.y1;
+				var stepX = (this.x2 - this.x1) / this.width;
+				var stepY = (this.y2 - this.y1) / this.height;
 
-        console.log("\n> Draw");
-        console.log("dx:" + this.dx + "   dy:" + this.dy);
-        console.log("x1:" + this.x1 + "   y1:" + this.y1);
-        console.log("x2:" + this.x2 + "   y2:" + this.y2);
+				var x = 0.0;
+				var y = 0.0;
+				var r = 1.0;
 
-        for (j = 0; j < this.height; j++) {
-          var cy = this.y1 + ((j / (this.height * 1.0)) * this.dy);
+				this.logs.innerHTML += "<li>x1:" + this.x1 + ", x2:" + this.x2 + ", y1:" + this.y1 + ", y2:"+ this.y2 + "</li>";
 
-          for (i = 0; i < this.width; i++) {
-              var cx = this.x1 + ((i / (this.width * 1.0)) * this.dx);
+				for (var sx = 0; sx < this.width; sx++) {
+					for (var sy = 0; sy < this.height; sy++) {
+						var p = this.x1 + stepX * sx;
+						var q = this.y2 - stepY * sy;
+						var k = 0;
+						var x0 = 0.0;
+						var y0 = 0.0;
 
-              var zx = cx;
-              var zy = cy;
+						do	{
+							x = x0*x0 - y0*y0 + p;
+							y = 2 * x0*y0 + q;
+							x0 = x;
+							y0 = y;
+							r = x*x + y*y;
+							k++;
+						} while ((r <= 5) && (k < MAX));
 
-              for (k = 0; k < 255; k++) {
-                  if (((zx * zx) + (zy * zy)) >= 4.0)
-                    break;
+						if (k >= MAX)
+							k = 0;
 
-                  tx = cx + ((zx * zx) - (zy * zy));
-                  zy = cy + (2 * zx * zy);
-                  zx = tx;
-                }
+						this.setPixel(sx, sy, this.colors[k] / 2, this.colors[k] / 2, this.colors[k]);
+					}
+				}
+				this.ctx.putImageData(this.imgData, 0, 0);
+			},
+			setPixel: function(x, y, r, g, b) {
+				var offset = (y * this.width + x) * 4;
+				this.imgData.data[offset] = r;
+				this.imgData.data[offset + 1] = g;
+				this.imgData.data[offset + 2] = b;
+				this.imgData.data[offset + 3] = 0xFF;
+			},
+			setClickEvent: function() {
+				var me = this;
+				this.canvas.addEventListener("click", function(e) {          
+					var x = e.offsetX || (e.clientX - me.canvas.offsetLeft);
+					var y = e.offsetY || (e.clientY - me.canvas.offsetTop)
+					var lowX = x-25;
+					var lowY = y-25;
+					var highX = x+25;
+					var highY = y+25;
 
-              this.x[i, j]= cx;
-              this.y[i, j]= cy;
+					var stepX = me.x2 - me.x1;
+					me.x1 = me.x1 + lowX * stepX / me.width;
+					me.x2 = me.x2 - (me.width - highX) * stepX / me.width;
+					var stepY = me.y2 - me.y1;
+					me.y1 = me.y1 + (me.height - highY) * stepY / me.height;
+					me.y2 = me.y2 - lowY * stepY / me.height;
 
-              this.setPixel(i, j, this.tanes[k], this.sines[k], this.sines[k]);
-            }
-        }
-        this.ctx.putImageData(this.imgData, 0, 0);
-      },
-      setPixel: function(x, y, r, g, b) {
-        var o = (y * this.width + x) * 4;
-        this.imgData.data[o] = r;
-        this.imgData.data[o + 1] = g;
-        this.imgData.data[o + 2] = b;
-        this.imgData.data[o + 3] = 0xFF;
-      },
-      setClickEvent: function() {
-        var me = this;
-        this.canvas.addEventListener("click", function(e) {
+					me.draw();
 
-          console.log("\n> click at " + e.offsetX + ":" + e.offsetY);
-          console.log("zx:" + me.x[e.offsetX, e.offsetY] + " zy:" + me.y[e.offsetX, e.offsetY]);
-          var dx = me.dx/2;
-          me.x1 = me.x[e.offsetX, e.offsetY] - dx;
-          me.x2 = Math.min(me.x[e.offsetX, e.offsetY] + dx, me.X2);
-
-          var dy = me.dy/2;
-          me.y1 = me.y[e.offsetX, e.offsetY] - dy;
-          me.y2 = me.y[e.offsetX, e.offsetY] + dy;
-          
-          me.draw();
-        }, false);
-      }
-    }
+				}, false);
+			}
+		}
  
 		window.addEventListener("load", function() {
-			var m = new Mandelbrot(document.getElementById("canvas"));
+			var m = new Mandelbrot(document.getElementById("canvas"), document.getElementById("logs"));
 			m.draw();
 			m.setClickEvent();
 		}, false);
 	</script> 
 </head> 
 <body> 
-	<h1>Mandelbrot</h1> 
-	<canvas id="canvas" width="200" height="200"></canvas> 
+	<h1>Mandelbrot</h1>
+	<canvas id="canvas" width="400" height="400"></canvas> 
+	<p>You can click on the fractal to zoom in. Beware, it's a little bit CPU intensive. <a href="mandelbrot.html">Reload</a> the page to try again.</p>
+	<h2>Computation log</h2>
+	<ul id="logs"></ul>
 </body> 
 </html> 
