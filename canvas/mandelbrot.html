@@ -1,0 +1,111 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> 
+	<title>Mandelbrot</title> 
+	<style type="text/css"> 
+		body { text-align: center; }
+		canvas { border: 1px solid grey; }
+	</style> 
+	<script> 
+		var Mandelbrot = function (canvas) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.height = canvas.height;
+			this.width = canvas.width;
+			this.x1 = this.X1 = -2.25;
+			this.x2 = this.X2 = 0.75;
+			this.y1 = this.Y1 = -1.5;
+			this.y2 = this.Y2 = 1.5;
+			this.sines = [];
+			this.tanes = [];
+			this.x = [this.width, this.height];
+			this.y = [this.width, this.height];
+			this.dx = 0;
+			this.dy = 0;
+			this.imgData = null;
+			
+			for (i = 0; i < 256; i++) {
+        var a  = Math.PI * 2 * i / 256;
+          this.sines[i] = parseInt((Math.sin(a) * 255));
+          this.tanes[i] = parseInt((Math.tan(a) * 255));
+      }
+		}
+		
+		Mandelbrot.prototype = {
+      draw: function() {
+        this.imgData = this.ctx.createImageData(this.width, this.height);
+
+        this.dx = this.x2 - this.x1;
+        this.dy = this.y2 - this.y1;
+
+        console.log("\n> Draw");
+        console.log("dx:" + this.dx + "   dy:" + this.dy);
+        console.log("x1:" + this.x1 + "   y1:" + this.y1);
+        console.log("x2:" + this.x2 + "   y2:" + this.y2);
+
+        for (j = 0; j < this.height; j++) {
+          var cy = this.y1 + ((j / (this.height * 1.0)) * this.dy);
+
+          for (i = 0; i < this.width; i++) {
+              var cx = this.x1 + ((i / (this.width * 1.0)) * this.dx);
+
+              var zx = cx;
+              var zy = cy;
+
+              for (k = 0; k < 255; k++) {
+                  if (((zx * zx) + (zy * zy)) >= 4.0)
+                    break;
+
+                  tx = cx + ((zx * zx) - (zy * zy));
+                  zy = cy + (2 * zx * zy);
+                  zx = tx;
+                }
+
+              this.x[i, j]= cx;
+              this.y[i, j]= cy;
+
+              this.setPixel(i, j, this.tanes[k], this.sines[k], this.sines[k]);
+            }
+        }
+        this.ctx.putImageData(this.imgData, 0, 0);
+      },
+      setPixel: function(x, y, r, g, b) {
+        var o = (y * this.width + x) * 4;
+        this.imgData.data[o] = r;
+        this.imgData.data[o + 1] = g;
+        this.imgData.data[o + 2] = b;
+        this.imgData.data[o + 3] = 0xFF;
+      },
+      setClickEvent: function() {
+        var me = this;
+        this.canvas.addEventListener("click", function(e) {
+
+          console.log("\n> click at " + e.offsetX + ":" + e.offsetY);
+          console.log("zx:" + me.x[e.offsetX, e.offsetY] + " zy:" + me.y[e.offsetX, e.offsetY]);
+          var dx = me.dx/2;
+          me.x1 = me.x[e.offsetX, e.offsetY] - dx;
+          me.x2 = Math.min(me.x[e.offsetX, e.offsetY] + dx, me.X2);
+
+          var dy = me.dy/2;
+          me.y1 = me.y[e.offsetX, e.offsetY] - dy;
+          me.y2 = me.y[e.offsetX, e.offsetY] + dy;
+          
+          me.draw();
+        }, false);
+      }
+    }
+ 
+		window.addEventListener("load", function() {
+			var m = new Mandelbrot(document.getElementById("canvas"));
+			m.draw();
+			m.setClickEvent();
+		}, false);
+	</script> 
+</head> 
+<body> 
+	<h1>Mandelbrot</h1> 
+	<canvas id="canvas" width="200" height="200"></canvas> 
+</body> 
+</html> 

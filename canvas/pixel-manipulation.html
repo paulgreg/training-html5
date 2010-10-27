@@ -1,0 +1,36 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> 
+	<title>Pixel manipulation</title> 
+	<style type="text/css"> 
+		body { text-align: center; }
+		canvas { border: 1px solid grey; }
+	</style> 
+	<script> 
+		window.addEventListener("load", function() {
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext("2d");
+      var width = canvas.width;
+      var height = canvas.height;
+      var imgData = ctx.createImageData(width, height);
+
+      for(var x = 0; x < width; x++) {
+        for(var y = 0; y < height; y++) {
+          var index = (x + y * width) * 4;
+          imgData.data[index+0] = x%255;
+          imgData.data[index+1] = 0;
+          imgData.data[index+2] = y%255;
+          imgData.data[index+3] = 255;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+    }, false);
+	</script> 
+</head> 
+<body>
+  <h1>Pixel manipulation</h1>
+	<canvas id="canvas" width="255" height="255"></canvas> 
+</body> 
+</html> 
