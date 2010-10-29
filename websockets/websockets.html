@@ -4,37 +4,46 @@
 	<meta charset="UTF-8">
 	<title>WebSockets chat demo</title>
 	<style type="text/css">
-		#chat { width: 75%; color: white; background: black; border: 1px solid red; }
-		#people { width: 20%; border: 1px solid red; float: right; }
-		input { border: 1px solid black; }
-		input#login { width: 5em; }
-		input#message { width: 10em; }
+		section {  }
+		#chat { width: 99%; border: 1px solid black; background: #FAFAF2; padding: 0.25em; }
+		#command { width: 99%; border-top: 1px solid grey; position: fixed; bottom: 0; padding: 0.5em 0; background-color: orange; text-align: center; }
+		input { border: 1px solid #FAFA40; }
+		input#login { width: 10%; }
+		input#message { width: 85%; }
 	</style>
 	<script>
+		function to2Digit(val) {
+			return (('' + val).length == 1) ? '0' + val : val;
+		}
+		function getTime() {
+			var t = new Date();
+			return to2Digit(t.getHours()) + ':' + to2Digit(t.getMinutes()) + '.' + to2Digit(t.getSeconds());
+		}
+
 		window.addEventListener('load', function() {
 
 			var l = document.getElementById('login'),
 				r = document.getElementById('chat'),
 				c = document.getElementById('message');
 
-			var ws = new WebSocket("ws://localhost:8080/chat");
+			var url = 'ws://' + window.location.host + ':8000/chat';
+			var ws = new WebSocket(url);
 
 			ws.onopen = function (evt) {
-				r.innerHTML += 'Connected<br>';
+				r.innerHTML += getTime() + '> Connected to ' + url + '<br>';
 			};
 
 			ws.onmessage = function (evt) {
-				var d = evt.data;
-				r.innerHTML += d + '<br>';
+				r.innerHTML = getTime() + '> ' + evt.data + '<br>' + r.innerHTML;
 			};
 
 			ws.onclose = function (evt) {
-				r.innerHTML += 'Disconnected<br>';
+				r.innerHTML += '<hr>' + getTime() +'> Disconnected<br>';
 			};
 
 			c.addEventListener('keypress', function(e) {
 				if (e.keyCode == 13) {
-					ws.send(l.value + ' says:' + c.value);
+					ws.send(l.value + ' says: ' + c.value);
 					c.value = '';
 				}
 			}, false);
@@ -44,7 +53,7 @@
 </head>
 <body>
 	<h1>WebSockets demo</h1>
-	<section id="chat"></section><aside id="people"></aside>
-	<p><input type="text" id="login" value="username" />:<input type="text" id="message" /></p>
+	<section id="chat"></section>
+	<section id="command"><input type="text" id="login" value="username" />:<input type="text" id="message" value="your message" /></section>
 </body>
 </html>
