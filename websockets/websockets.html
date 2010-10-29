@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>WebSockets chat demo</title>
+	<style type="text/css">
+		#chat { width: 75%; color: white; background: black; border: 1px solid red; }
+		#people { width: 20%; border: 1px solid red; float: right; }
+		input { border: 1px solid black; }
+		input#login { width: 5em; }
+		input#message { width: 10em; }
+	</style>
+	<script>
+		window.addEventListener('load', function() {
+
+			var l = document.getElementById('login'),
+				r = document.getElementById('chat'),
+				c = document.getElementById('message');
+
+			var ws = new WebSocket("ws://localhost:8080/chat");
+
+			ws.onopen = function (evt) {
+				r.innerHTML += 'Connected<br>';
+			};
+
+			ws.onmessage = function (evt) {
+				var d = evt.data;
+				r.innerHTML += d + '<br>';
+			};
+
+			ws.onclose = function (evt) {
+				r.innerHTML += 'Disconnected<br>';
+			};
+
+			c.addEventListener('keypress', function(e) {
+				if (e.keyCode == 13) {
+					ws.send(l.value + ' says:' + c.value);
+					c.value = '';
+				}
+			}, false);
+
+		}, false);
+	</script>
+</head>
+<body>
+	<h1>WebSockets demo</h1>
+	<section id="chat"></section><aside id="people"></aside>
+	<p><input type="text" id="login" value="username" />:<input type="text" id="message" /></p>
+</body>
+</html>
