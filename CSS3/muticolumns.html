@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<title>CSS3 Multi-columns</title>
+	<style type="text/css">
+		p { 	column-count: 3; 				column-rule: 1px solid grey; 				column-gap: 1em;
+				-webkit-column-count: 3;	-webkit-column-rule: 1px solid grey;	-webkit-column-gap: 1em;
+				-moz-column-count: 3;		-moz-column-rule: 1px solid grey;		-moz-column-gap: 1em;
+		}
+	</style>
+</head>
+<body>
+	<h1>Multi-column on 1st chapter of Apache CouchDB free ebook</h1>
+	<h2>Why CouchDB?</h2>
+	<p>
+Apache CouchDB is one of a new breed of database management systems. This chapter
+explains why there’s a need for new systems as well as the motivations behind building
+CouchDB.
+As CouchDB developers, we’re naturally very excited to be using CouchDB. In this
+chapter we’ll share with you the reasons for our enthusiasm. We’ll show you how
+CouchDB’s schema-free document model is a better fit for common applications,
+how the built-in query engine is a powerful way to use and process your data, and how
+CouchDB’s design lends itself to modularization and scalability.
+Relax
+If there’s one word to describe CouchDB, it is relax. It is in the title of this book, it is
+the byline to CouchDB’s official logo, and when you start CouchDB, you see:
+Apache CouchDB has started. Time to relax.
+Why is relaxation important? Developer productivity roughly doubled in the last five
+years. The chief reason for the boost is more powerful tools that are easier to use. Take
+Ruby on Rails as an example. It is an infinitely complex framework, but it’s easy to get
+started with. Rails is a success story because of the core design focus on ease of use.
+This is one reason why CouchDB is relaxing: learning CouchDB and understanding its
+core concepts should feel natural to most everybody who has been doing any work on
+the Web. And it is still pretty easy to explain to non-technical people.
+Getting out of the way when creative people try to build specialized solutions is in itself
+a core feature and one thing that CouchDB aims to get right. We found existing tools
+too cumbersome to work with during development or in production, and decided to
+focus on making CouchDB easy, even a pleasure, to use. Chapters 3 and 4 will dem-
+onstrate the intuitive HTTP-based REST API.
+Another area of relaxation for CouchDB users is the production setting. If you have a
+live running application, CouchDB again goes out of its way to avoid troubling you.
+3
+Its internal architecture is fault-tolerant, and failures occur in a controlled environment
+and are dealt with gracefully. Single problems do not cascade through an entire server
+system but stay isolated in single requests.
+CouchDB’s core concepts are simple (yet powerful) and well understood. Operations
+teams (if you have a team; otherwise, that’s you) do not have to fear random behavior
+and untraceable errors. If anything should go wrong, you can easily find out what the
+problem is—but these situations are rare.
+CouchDB is also designed to handle varying traffic gracefully. For instance, if a website
+is experiencing a sudden spike in traffic, CouchDB will generally absorb a lot of con-
+current requests without falling over. It may take a little more time for each request,
+but they all get answered. When the spike is over, CouchDB will work with regular
+speed again.
+The third area of relaxation is growing and shrinking the underlying hardware of your
+application. This is commonly referred to as scaling. CouchDB enforces a set of limits
+on the programmer. On first look, CouchDB might seem inflexible, but some features
+are left out by design for the simple reason that if CouchDB supported them, it would
+allow a programmer to create applications that couldn’t deal with scaling up or down.
+We’ll explore the whole matter of scaling CouchDB in Part IV, Deploying CouchDB.
+In a nutshell: CouchDB doesn’t let you do things that would get you in trouble later
+on. This sometimes means you’ll have to unlearn best practices you might have picked
+up in your current or past work. Chapter 24 contains a list of common tasks and how
+to solve them in CouchDB.
+
+	</p>
+</body>
+</html>
