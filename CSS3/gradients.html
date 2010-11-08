@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<title>CSS3 Gradients</title>
+	<style type="text/css">
+		div {	width: 90%; height: 3em; border: 1px solid gray; margin: auto; margin-bottom: 2em; }
+		div.style1	{ 	background: gradient(linear, left top, left bottom, from(#00ABEB), to(white), color-stop(0.5, white), color-stop(0.5, #66CC00));
+			background: -webkit-gradient(linear, left top, left bottom, from(#00ABEB), to(white), color-stop(0.5, white), color-stop(0.5, #66CC00));				
+			background: -moz-gradient(linear, left top, left bottom, from(#00ABEB), to(white), color-stop(0.5, white), color-stop(0.5, #66CC00));
+		}
+		div.style2	{ 	background: gradient(radial, 430 50, 0, 430 50, 422, from(red), to(orange));
+			background: -webkit-gradient(radial, 430 50, 0, 430 50, 422, from(red), to(orange));
+			background: -moz-gradient(radial, 430 50, 0, 430 50, 422, from(red), to(orange));
+		}
+	</style>
+</head>
+<body>
+	<h1>CSS3 Gradients</h1>
+	<div class="style1">Style 1</div>
+	<div class="style2">Style 2</div>
+	<p style="color: green;">Working on Chromium 6+, Safari Mobile?</p>
+	<p style="color: red;">NOT working on FF 4</p>
+</body>
+</html>
