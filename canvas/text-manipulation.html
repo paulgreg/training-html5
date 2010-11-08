@@ -1,0 +1,52 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> 
+	<title>Text manipulation</title> 
+	<style type="text/css"> 
+		body { text-align: center; }
+		canvas { border: 1px solid grey; }
+	</style> 
+	<script> 
+		window.addEventListener("load", function() {
+		   var canvas = document.getElementById('canvas');
+		   var ctx = canvas.getContext("2d");
+		   var width = canvas.width;
+		   var height = canvas.height;
+			var hue = [ [255, 0, 0], [255, 255, 0] ]; //, [0, 255, 0], [0, 255, 255], [0, 0, 255],  [255, 0, 255], [255, 0, 0] ];
+
+			var gradient = ctx.createLinearGradient(0, 0, width, 0);
+			for (var i in hue) {
+				var color = 'rgb(' + hue[i][0] + ',' + hue[i][1] + ',' + hue[i][2] + ')';
+				gradient.addColorStop(i * 1/hue.length, color);
+			}
+
+			ctx.fillStyle = gradient;
+
+			// Draw a rectangle
+			ctx.fillRect(10, 10, width - 20, 20);
+
+			// Draw text
+
+			var text = 'Valtech', x = 15, y = 80, l = 220;
+			ctx.font = 'bold 52px verdana';
+			ctx.fillText(text, x, y, l);
+
+			ctx.shadowOffsetX = 5;
+			ctx.shadowOffsetY = 5;
+			ctx.shadowBlur = 4;
+			ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+
+			ctx.strokeStyle = '#666';
+			ctx.strokeText(text, x, y, l);
+
+    	}, false);
+	</script> 
+</head> 
+<body>
+  <h1>Text manipulation</h1>
+	<canvas id="canvas" width="255" height="120"></canvas> 
+	<p style="color: green;">Working on Firefox 3.6+, Chromium 6+, Safari Mobile</p>
+</body> 
+</html> 
