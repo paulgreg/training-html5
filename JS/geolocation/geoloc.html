@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Geolocation support</title>
+	<script>
+		window.addEventListener("load", function() {
+			var pos = document.getElementById('position'),
+					map = document.getElementById('map');
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+
+					var la = position.coords.latitude,
+							lo = position.coords.longitude;
+
+      			pos.innerHTML = 'latitude: ' + la + ', longitude: ' + lo;
+					map.href = map.href + la + ',' + lo;
+				});
+			} else {
+				pos.innerHTML = 'geolocation is not supported';
+			}
+
+		}, false);
+	</script>
+</head>
+<body>
+<h1>Geolocation support</h1>
+<p>My guess is: <span id="position"></span>, <a href="http://maps.google.com/maps/api/staticmap?zoom=15&size=400x400&sensor=false&center=" id="map">map</a>.</p>
+</body>
+</html>
