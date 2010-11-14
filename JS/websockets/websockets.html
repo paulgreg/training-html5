@@ -10,7 +10,8 @@
 		input { border: 1px solid #FAFA40; }
 		input#login { width: 10%; }
 		input#message { width: 85%; }
-		aside { color: green; float: right; }
+		aside { float: right; }
+		aside p { margin-top: 0; }
 	</style>
 	<script>
 		function to2Digit(val) {
@@ -53,7 +54,10 @@
 	</script>
 </head>
 <body>
-	<aside>Working on Google Chrome 5+, Safari 5 (and iOS 4.2), Firefox 4, Opera 11</aside>
+	<aside>
+		<p style="color: green;">Working on Firefox 4+, Chromium 6+</p>
+		<p style="color: red;">Not working on Safari Mobile 3.2</p>
+	</aside>
 	<h1>WebSockets demo</h1>
 	<section id="chat"></section>
 	<section id="command"><input type="text" id="login" value="username" />:<input type="text" id="message" value="your message" /></section>
