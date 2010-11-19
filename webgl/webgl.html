@@ -1,0 +1,74 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> 
+	<title>WebGL demo</title> 
+	<style type="text/css"> 
+		body { text-align: center; }
+	</style> 
+	<script> 
+
+		var GlDemo = function (canvas) {
+			this.canvas = canvas;
+		   this.gl = null;
+			this.pyramidVertextPositionBuffer = null;
+			try {
+				gl = this.canvas.getContext("experimental-webgl");
+				gl.viewportWidth = canvas.width;
+				gl.viewportHeight = canvas.height;
+			} catch(e) {
+				alert("Cannot initialise WebGL");
+			}
+		}
+
+		GlDemo.prototype = {
+
+			initBuffer: function() {
+				this.pyramidVertextPositionBuffer = this.gl.createBuffer();
+				this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pyramidVertextPositionBuffer);
+				var vertices = [
+				 // Front
+					 0.0,  1.0,  0.0,
+					-1.0, -1.0,  1.0,
+					 1.0, -1.0,  1.0,
+				 // Right
+					 0.0,  1.0,  0.0,
+					 1.0, -1.0,  1.0,
+					 1.0, -1.0, -1.0,
+				 // Back
+					 0.0,  1.0,  0.0,
+					 1.0, -1.0,  1.0,
+					-1.0, -1.0, -1.0,
+				 // Left
+					 0.0,  1.0,  0.0,
+					-1.0, -1.0, -1.0,
+					-1.0, -1.0,  1.0,
+				];
+				this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
+				this.pyramidVertextPositionBuffer.itemSize = 3;
+				this.pyramidVertextPositionBuffer.numItems = 12;
+			},
+			draw: function() {
+				this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+				this.gl.clearDepth(1.0);
+				this.gl.enable(this.gl.DEPTH_TEST);
+				this.gl.depthFunc(this.gl.LEQUAL);
+			}
+		}
+
+
+		window.addEventListener("load", function() {
+		   var canvas = document.getElementById('canvas');
+			var glDemo = new GlDemo(canvas);
+			glDemo.draw();
+    	}, false);
+	</script> 
+</head> 
+<body>
+  <h1>WebGL demo</h1>
+	<canvas id="canvas" width="300" height="300"></canvas> 
+	<p style="color: green;">Working on Chromium 8+, Safari...</p>
+	<p style="color: red;">Not working on Firefox, Safari Mobile 3.2</p>
+</body> 
+</html> 

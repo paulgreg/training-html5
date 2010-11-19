@@ -1,0 +1,15 @@
+CACHE MANIFEST
+# manifest version 1.0.6
+# files to cache
+index.html
+offline.js
+marylin.jpg
+
+# always on the network
+NETWORK:
+network.html
+
+# if a ressource (A) not available, use fallback (B)
+FALLBACK:
+online.html fallback.html
+
