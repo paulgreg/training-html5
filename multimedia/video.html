@@ -3,223 +3,87 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Video support</title>
-	<style type="text/css">
+	<style>
+		body		{ text-align: center; }
+		video		{ margin: 1em 0; }
+		table 	{ border: 1px solid black; margin: auto; }
+		caption	{ font-size: 1.1em; font-weight: bold; }
+		th, td	{ border: 1px solid grey; }
+		thead th	{ background-color: black; color: white; }
+		td 		{ text-align: center; }
+		tfoot td	{ text-align: left; }
+		sup		{ font-style: italic; }
 	</style>
 </head>
 <body>
 	<h1>Video support</h1>
-	<video width="400" height="300" src="video.avi" poster="frame.png" autoplay controls loop>
+	<video autoplay controls loop>
+		<source src="../assets/demo2.mp4" />
+		<source src="../assets/demo2.ogv" />
 		This content appears if the video tag or the codec is not supported.
 	</video>
 
-
-
-<body>
   <table>
-    <caption>
-      Video codec support in upcoming browsers
-    </caption>
-
+    <caption>Video codec support in browsers</caption>
     <thead>
       <tr>
-        <th style="text-align: left;">Codecs/container</th>
-
+        <th>Codecs/container</th>
         <th title="Internet Explorer">IE</th>
-
         <th title="Mozilla Firefox">Firefox</th>
-
         <th title="Apple Safari">Safari</th>
-
         <th title="Google Chrome">Chrome</th>
-
         <th>Opera</th>
-
         <th>iPhone</th>
-
         <th>Android</th>
       </tr>
     </thead>
-
     <tbody>
       <tr>
         <th>Theora+Vorbis+Ogg</th>
-
-        <td>&Acirc;&middot;</td>
-
+        <td></td>
         <td>3.5+</td>
-
-        <td>&acirc;&euro;&nbsp;</td>
-
+        <td><sup>2</sup></td>
         <td>5.0+</td>
-
         <td>10.5+</td>
-
-        <td>&Acirc;&middot;</td>
-
-        <td>&Acirc;&middot;</td>
+        <td></td>
+        <td></td>
       </tr>
-
       <tr>
         <th>H.264+AAC+MP4</th>
-
         <td>9.0+</td>
-
-        <td>&Acirc;&middot;</td>
-
+        <td></td>
         <td>3.0+</td>
-
         <td>5.0+</td>
-
-        <td>&Acirc;&middot;</td>
-
+        <td></td>
         <td>3.0+</td>
-
         <td>2.0+</td>
       </tr>
-
       <tr>
         <th>WebM</th>
-
-        <td>&nbsp;9.0+<sup>*</sup></td>
-
+        <td>9.0+<sup>1</sup></td>
         <td>4.0+</td>
-
-        <td>&acirc;&euro;&nbsp;</td>
-
+        <td><sup>2</sup></td>
         <td>6.0+</td>
-
         <td>10.6+</td>
-
-        <td>&Acirc;&middot;</td>
-
-        <td>&acirc;&euro;&iexcl;</td>
+        <td></td>
+        <td></td>
       </tr>
     </tbody>
-
     <tfoot>
       <tr>
-        <td colspan="8" style="text-align: left;">* Internet Explorer 9 will only support
-        WebM &acirc;&euro;&oelig;<a href=
+        <td colspan="8"><sup>1</sup> Internet Explorer 9 will only support
+        WebM <a href=
         "http://windowsteamblog.com/windows/b/bloggingwindows/archive/2010/05/19/another-follow-up-on-html5-video-in-ie9.aspx">when
-        the user has installed a VP8 codec</a>,&acirc;&euro; which implies that Microsoft
-        will not be shipping the codec themselves.</td>
+        the user has installed a VP8 codec</a>.</td>
       </tr>
-
       <tr>
-        <td colspan="8" style="text-align: left;">&acirc;&euro;&nbsp; Safari will play
+        <td colspan="8"><sup>2</sup> Safari will play
         anything that QuickTime can play, but QuickTime only comes with H.264/AAC/MP4
         support pre-installed.</td>
-      </tr>
-
-      <tr>
-        <td colspan="8" style="text-align: left;">&acirc;&euro;&iexcl; Google has
-        committed to supporting WebM &acirc;&euro;&oelig;in a future release&acirc;&euro;
-        of Android, but there&acirc;&euro;&trade;s no firm timeline yet.</td>
       </tr>
     </tfoot>
   </table>
 
-
-<span class="mw-headline" id="Video_format_support">Video format support</span></h2>
-
-<p>This table documents support for video codecs by the <code>&lt;video&gt;</code> element.</p>
-<table style="text-align: center; width: 95%;" class="wikitable">
-<tbody><tr>
-<th></th>
-<th style="width: 18%;"><a href="/wiki/Trident_%28layout_engine%29" title="Trident (layout engine)">Trident</a></th>
-<th style="width: 18%;"><a href="/wiki/Gecko_%28layout_engine%29" title="Gecko (layout engine)">Gecko</a></th>
-<th style="width: 18%;"><a href="/wiki/WebKit" title="WebKit">WebKit</a></th>
-<th style="width: 18%;"><a href="/wiki/Presto_%28layout_engine%29" title="Presto (layout engine)">Presto</a></th>
-</tr>
-
-<tr>
-<th style="text-align: left;"><a href="/wiki/Ogg" title="Ogg">Ogg</a> <a href="/wiki/Theora" title="Theora">Theora</a></th>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No</td>
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">1.9.1<sup id="cite_ref-gecko191-media_17-0" class="reference"><a href="#cite_note-gecko191-media-17"><span>[</span>g 12<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(255, 238, 221); color: black; vertical-align: middle; text-align: center;" class="depends table-depends">Depends<sup id="cite_ref-webkit-codecs_23-0" class="reference"><a href="#cite_note-webkit-codecs-23"><span>[</span>note 3<span>]</span></a></sup></td>
-
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">2.5</td>
-</tr>
-<tr>
-<th style="text-align: left;"><a href="/wiki/H.264" title="H.264" class="mw-redirect">H.264</a></th>
-<td style="background: none repeat scroll 0% 0% rgb(255, 221, 221); color: black; vertical-align: middle; text-align: center;" class="nightly table-nightly">5.0<sup id="cite_ref-24" class="reference"><a href="#cite_note-24"><span>[</span>t 2<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No<sup id="cite_ref-25" class="reference"><a href="#cite_note-25"><span>[</span>g 13<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">525<sup id="cite_ref-webkit-codecs_23-1" class="reference"><a href="#cite_note-webkit-codecs-23"><span>[</span>note 3<span>]</span></a></sup></td>
-
-<td style="background: none repeat scroll 0% 0% rgb(255, 238, 221); color: black; vertical-align: middle; text-align: center;" class="depends table-depends">Depends<sup id="cite_ref-opera-av_27-0" class="reference"><a href="#cite_note-opera-av-27"><span>[</span>note 4<span>]</span></a></sup></td>
-</tr>
-<tr>
-<th style="text-align: left;"><a href="/wiki/VP8" title="VP8">VP8</a></th>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No<sup id="cite_ref-29" class="reference"><a href="#cite_note-29"><span>[</span>note 5<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(255, 221, 221); color: black; vertical-align: middle; text-align: center;" class="nightly table-nightly">2.0<sup id="cite_ref-30" class="reference"><a href="#cite_note-30"><span>[</span>g 14<span>]</span></a></sup><sup id="cite_ref-31" class="reference"><a href="#cite_note-31"><span>[</span>g 15<span>]</span></a></sup></td>
-
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">534<sup id="cite_ref-32" class="reference"><a href="#cite_note-32"><span>[</span>w 8<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">2.6.30<sup id="cite_ref-33" class="reference"><a href="#cite_note-33"><span>[</span>p 3<span>]</span></a></sup><sup id="cite_ref-34" class="reference"><a href="#cite_note-34"><span>[</span>p 4<span>]</span></a></sup><sup id="cite_ref-35" class="reference"><a href="#cite_note-35"><span>[</span>p 5<span>]</span></a></sup></td>
-</tr>
-
-</tbody></table>
-<h2><span class="editsection">[<a href="/w/index.php?title=Comparison_of_layout_engines_%28HTML5_Media%29&amp;action=edit&amp;section=5" title="Edit section: Audio format support">edit</a>]</span> <span class="mw-headline" id="Audio_format_support">Audio format support</span></h2>
-<p>This table documents support for audio codecs by the <code>&lt;audio&gt;</code> element.</p>
-<table style="text-align: center; width: 95%;" class="wikitable">
-<tbody><tr>
-<th></th>
-<th style="width: 18%;"><a href="/wiki/Trident_%28layout_engine%29" title="Trident (layout engine)">Trident</a></th>
-
-<th style="width: 18%;"><a href="/wiki/Gecko_%28layout_engine%29" title="Gecko (layout engine)">Gecko</a></th>
-<th style="width: 18%;"><a href="/wiki/WebKit" title="WebKit">WebKit</a></th>
-<th style="width: 18%;"><a href="/wiki/Presto_%28layout_engine%29" title="Presto (layout engine)">Presto</a></th>
-</tr>
-<tr>
-<th style="text-align: left;">Ogg <a href="/wiki/Vorbis" title="Vorbis">Vorbis</a></th>
-<td rowspan="2" style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No</td>
-<td rowspan="2" style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">1.9.1<sup id="cite_ref-gecko191-media_17-1" class="reference"><a href="#cite_note-gecko191-media-17"><span>[</span>g 12<span>]</span></a></sup></td>
-
-<td style="background: none repeat scroll 0% 0% rgb(255, 238, 221); color: black; vertical-align: middle; text-align: center;" class="depends table-depends">Depends<sup id="cite_ref-webkit-codecs_23-2" class="reference"><a href="#cite_note-webkit-codecs-23"><span>[</span>note 3<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">2.5</td>
-</tr>
-<tr>
-<th style="text-align: left;"><a href="/wiki/WAV" title="WAV">WAV</a> <a href="/wiki/PCM" title="PCM" class="mw-redirect">PCM</a></th>
-<td rowspan="3" style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">525<sup id="cite_ref-webkit-codecs_23-3" class="reference"><a href="#cite_note-webkit-codecs-23"><span>[</span>note 3<span>]</span></a></sup></td>
-
-<td style="background: none repeat scroll 0% 0% rgb(144, 255, 144); color: black; vertical-align: middle; text-align: center;" class="table-yes">2.0</td>
-</tr>
-<tr>
-<th style="text-align: left;"><a href="/wiki/MP3" title="MP3">MP3</a></th>
-<td rowspan="2" style="background: none repeat scroll 0% 0% rgb(255, 221, 221); color: black; vertical-align: middle; text-align: center;" class="nightly table-nightly">5.0<sup id="cite_ref-36" class="reference"><a href="#cite_note-36"><span>[</span>t 4<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No<sup id="cite_ref-37" class="reference"><a href="#cite_note-37"><span>[</span>g 16<span>]</span></a></sup></td>
-<td rowspan="2" style="background: none repeat scroll 0% 0% rgb(255, 238, 221); color: black; vertical-align: middle; text-align: center;" class="depends table-depends">Depends<sup id="cite_ref-opera-av_27-1" class="reference"><a href="#cite_note-opera-av-27"><span>[</span>note 4<span>]</span></a></sup></td>
-
-</tr>
-<tr>
-<th style="text-align: left;"><a href="/wiki/Advanced_Audio_Coding" title="Advanced Audio Coding">AAC</a></th>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No</td>
-</tr>
-<tr>
-<th style="text-align: left;"><a href="/wiki/Speex" title="Speex">Speex</a></th>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No</td>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No<sup id="cite_ref-38" class="reference"><a href="#cite_note-38"><span>[</span>g 17<span>]</span></a></sup></td>
-
-<td style="background: none repeat scroll 0% 0% rgb(255, 238, 221); color: black; vertical-align: middle; text-align: center;" class="depends table-depends">Depends<sup id="cite_ref-webkit-codecs_23-4" class="reference"><a href="#cite_note-webkit-codecs-23"><span>[</span>note 3<span>]</span></a></sup></td>
-<td style="background: none repeat scroll 0% 0% rgb(255, 144, 144); color: black; vertical-align: middle; text-align: center;" class="table-no">No</td>
-</tr>
-</tbody></table>
-<h2><span class="editsection">[<a href="/w/index.php?title=Comparison_of_layout_engines_%28HTML5_Media%29&amp;action=edit&amp;section=6" title="Edit section: See also">edit</a>]</span> 
-
-
-	<table>
-		<tr>
-			<td>Codecs</td>
-			<td>IE9</td>
-		</tr>
-		</tr>
-			<td>MP4 container</td>
-			<td>X</td>
-		</tr>	
-		</tr>
-			<td>h.264, all profiles</td>
-			<td>X</td>
-		</tr>
-	</table>
 </body>
 </html>
 
