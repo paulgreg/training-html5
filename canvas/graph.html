@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+	<title>Graph exemple</title>
+	<style type="text/css">
+		body { text-align: center; }
+		canvas { border: 1px solid grey; }
+	</style>
+	<script>
+		var Point = function(x, y) {
+			this.x = x;
+			this.y = y;
+		};
+
+		var Graph = function (canvas) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.height = canvas.height;
+			this.width = canvas.width;
+			this.margin = 20;
+		}
+		
+		Graph.prototype = {
+		
+			init: function() {
+				// Grey grid
+				for (var x = 0; x < this.width; x += 10)    { this.ctx.moveTo(x, 0); this.ctx.lineTo(x, this.height); }
+				for (var y = 0; y < this.height; y += 10)   { this.ctx.moveTo(0, y); this.ctx.lineTo(this.width, y); }
+				this.ctx.strokeStyle = "#eee"; 
+				this.ctx.stroke();
+				
+				// Axis
+				this.ctx.beginPath(); 
+				{ 
+          // Horizontal
+          this.ctx.moveTo(0, this.height - this.margin); 
+          this.ctx.lineTo(this.width - 10, this.height - this.margin);
+          this.ctx.lineTo(this.width - 15, this.height - this.margin - 5);
+          this.ctx.moveTo(this.width - 10, this.height - this.margin);
+          this.ctx.lineTo(this.width - 15, this.height - this.margin + 5);
+          
+          // Vertical
+          this.ctx.moveTo(this.margin, this.height); 
+          this.ctx.lineTo(this.margin, this.margin);
+          this.ctx.lineTo(this.margin - 5, this.margin + 5);
+          this.ctx.lineTo(this.margin, this.margin);
+          this.ctx.lineTo(this.margin + 5, this.margin + 5);
+        }
+				this.ctx.strokeStyle = "#000"; 
+				this.ctx.stroke();
+				
+			},
+			draw: function(points) {
+        var last = new Point(this.margin, this.height - this.margin);
+        for(var i in points) {
+          this.ctx.beginPath();
+          this.ctx.moveTo(last.x, last.y);
+          current = new Point(points[i].x + this.margin, this.height - points[i].y - this.margin);
+          this.ctx.lineTo(current.x, current.y);
+          this.ctx.strokeStyle = "orange"; 
+          this.ctx.stroke();
+          last = current;
+        }
+			}
+		}
+
+		window.addEventListener("load", function() {
+			var points = [];
+			for(var x = 10; x < 350; x += 10)
+        points[points.length] = new Point(x, Math.random() * 100 + x/2);
+
+			var g = new Graph(document.getElementById("canvas"));
+			g.init();
+			g.draw(points);
+		}, false);
+	</script>
+</head>
+<body>
+	<h1>Graph exemple</h1>
+	<canvas id="canvas" width="400" height="400"></canvas>
+	<p style="color: green;">Working on Firefox 3.6+, Chromium 6+, Safari Mobile 3.2+</p>
+</body>
+</html>

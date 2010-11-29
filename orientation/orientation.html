@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Orientation exemple</title>
+	<style type="text/css">
+		body { text-align: center; }
+	</style>
+	<script>
+    function orientationChange(obj) {
+		var orientation = document.getElementById('orientation');
+
+		orientation.innerHTML = "don't know";
+
+      if (window.orientation)
+        orientation.innerHTML = window.orientation + "°";
+      else if (obj && obj.orientation)
+        orientation.innerHTML = obj.orientation + "°";
+      else if (obj && obj.x) 
+        orientation.innerHTML = "x:" + obj.x + " y:" + obj.y + " z:" + obj.z;
+    }
+
+	window.addEventListener("load", function() {
+		document.addEventListener("MozOrientation", orientationChange);
+		document.addEventListener("orientationchange", orientationChange);
+
+		orientationChange();
+	}, false);
+	</script>
+</head>
+<body>
+	<h1>Orientation exemple</h1>
+	<p>Orientation is <span id="orientation"></span></p>
+	<p style="color: green;">Working on Safari Mobile 4.2.1</p>
+</body>
+</html>
