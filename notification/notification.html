@@ -6,11 +6,6 @@
 	<script>
 	var Notifier = {};
 
-	if (navigator.notification && navigator.notification.notify) {
-		// Used anywhere ?
-	   navigator.notification.notify("Another Desktop Notification", "Check out my icon","http://dougt.org/me.jpg");
-	}
-
 	Notifier.myNotifications = window.webkitNotifications;
 	 
 	Notifier.setup = function() {
@@ -28,8 +23,7 @@
 	Notifier.notify = function() {
 		if(Notifier.myNotifications.checkPermission() === 0) {
 			Notifier.notification = Notifier.myNotifications.createNotification(
-				"../assets/imgs/exclamation.png",
-				"Hey !",
+				"../assets/imgs/exclamation.png", "Hey !",
 				"I would like to notify something important"
 			);
 			Notifier.notification.ondisplay = function() {
@@ -48,6 +42,7 @@
 	<h1>Notification exemple</h1>
 	<a href="javascript:Notifier.setup()">1. Allow</a>
 	<a href="javascript:Notifier.notify()">2. Notify</a>
-	<p style="color: green;">Working on Chrome 7+</p>
+	<p style="color: green;">Working on Chrome 7+, Safari?, iOs ?</p>
+	<p style="color: red;">Not working on FF</p>
 </body>
 </html>
