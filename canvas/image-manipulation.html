@@ -1,0 +1,49 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> 
+	<title>Image manipulation</title> 
+	<style type="text/css"> 
+		body { text-align: center; }
+		canvas { border: 1px solid grey; }
+	</style> 
+	<script> 
+	window.addEventListener("load", function() {
+	   var canvas = document.getElementById('canvas');
+	   var ctx = canvas.getContext("2d");
+		var image = document.querySelector("img");
+	   var width = canvas.width;
+	   var height = canvas.height;
+
+      ctx.drawImage(image, 0, 0);
+
+	   var canvasData = ctx.getImageData(0, 0, width, height);
+
+
+	   for(var x = 0; x < width; x++) {
+	     for(var y = 0; y < height; y++) {
+
+				var index = (x + y * width) * 4;
+				var r = canvasData.data[index + 0];
+				var g = canvasData.data[index + 1];
+				var b = canvasData.data[index + 2];
+
+				var gray = (r + g + b) / 3;
+				canvasData.data[index + 0] = gray;
+				canvasData.data[index + 1] = gray;
+				canvasData.data[index + 2] = gray;
+				canvasData.data[index + 3] = 255;
+	     }
+	   }
+	   ctx.putImageData(canvasData, 0, 0);
+    }, false);
+	</script> 
+</head> 
+<body>
+  <h1>Image manipulation</h1>
+	<img src="../assets/imgs/marylin.jpg" width="281" height="500" />
+	<canvas id="canvas" width="281" height="500"></canvas> 
+	<p style="color: green;">Working on Firefox 3.6+, Chromium 6+, Safari Mobile 3.2+</p>
+</body>
+</html> 
