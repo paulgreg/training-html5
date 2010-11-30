@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Notification exemple</title>
+	<script>
+	var Notifier = {};
+
+	if (navigator.notification && navigator.notification.notify) {
+		// Used anywhere ?
+	   navigator.notification.notify("Another Desktop Notification", "Check out my icon","http://dougt.org/me.jpg");
+	}
+
+	Notifier.myNotifications = window.webkitNotifications;
+	 
+	Notifier.setup = function() {
+		var status = Notifier.myNotifications.checkPermission();
+
+		switch(status) {
+			case 1: // 1 = Permission is uknown so we request permission
+				Notifier.myNotifications.requestPermission();
+				break;
+			case 0: // 0 = Permission has been granted to show notifications
+			case 2: // 2 = Permission has been denied	
+		}
+	};
+
+	Notifier.notify = function() {
+		if(Notifier.myNotifications.checkPermission() === 0) {
+			Notifier.notification = Notifier.myNotifications.createNotification(
+				"../assets/imgs/exclamation.png",
+				"Hey !",
+				"I would like to notify something important"
+			);
+			Notifier.notification.ondisplay = function() {
+				var audio = new Audio("../assets/notification.mp3");
+				audio.play();
+				window.setTimeout("Notifier.notification.cancel()", 5000);
+			}
+			Notifier.notification.show();
+		} else {
+			alert("You need to allow web notifications for this to work");
+		}
+	};
+	</script>
+</head>
+<body>
+	<h1>Notification exemple</h1>
+	<a href="javascript:Notifier.setup()">1. Allow</a>
+	<a href="javascript:Notifier.notify()">2. Notify</a>
+	<p style="color: green;">Working on Chrome 7+</p>
+</body>
+</html>
