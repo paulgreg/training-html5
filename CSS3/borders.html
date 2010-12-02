@@ -1,0 +1,24 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<title>CSS3 border-radius</title> 
+	<style type="text/css"> 
+    .round {  -moz-border-radius: 4px;    -webkit-border-radius: 4px;       border-radius: 4px;   background-color: orange;}
+    .circle {   -moz-border-radius: 50px;   -webkit-border-radius: 50px;    border-radius: 50px;  background-color: orange;
+      width: 100px; height: 100px;
+      display: -moz-box; display: -webkit-box; display: box;
+      -moz-box-orient: horizontal; /* the default, so not really necessary here */ -webkit-box-orient: horizontal; box-orient: horizontal;
+      -moz-box-pack: center; -moz-box-align: center; 
+      -webkit-box-pack: center; -webkit-box-align: center;
+      box-pack: center; box-align: center;
+    }
+	</style> 
+</head> 
+<body> 
+	<h1>CSS3 border-radius</h1> 
+	<p class="round">Some round borders</p> 
+	<p class="circle">A circle !</p> 
+	<p style="color: green;">Working on Chromium 6+, FF 3.6, Safari Mobile ?</p> 
+</body> 
+</html> 
