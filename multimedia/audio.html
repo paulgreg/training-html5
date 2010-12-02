@@ -3,59 +3,75 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Audio support</title>
-	<style type="text/css">
+	<style>
+		body		{ text-align: center; }
+		audio		{ margin: 1em 0; }
+		table 	{ border: 1px solid black; margin: auto; width: 70%; }
+		caption	{ font-size: 1.1em; font-weight: bold; }
+		th, td	{ border: 1px solid grey; }
+		thead th	{ background-color: black; color: white; }
+		td 		{ text-align: center; }
+		tfoot td	{ text-align: left; }
+		sup		{ font-style: italic; }
 	</style>
 </head>
 <body>
+	<h1>Audio support</h1>
 
-<table>
-  <caption>Codec <mark class="searchword">support</mark> in modern desktop browsers</caption>
-  <thead>
-    <tr>
-      <th>Browser</th>
-      <th>Ogg Vorbis</th>
-      <th>MP3</th>
-      <th>WAV</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>FireFox 3.6+</td>
-      <td>✓</td>
-      <td></td>
-      <td>✓</td>
-    </tr>
-    <tr>
-      <td>Safari 5+</td>
-      <td></td>
-      <td>✓</td>
-      <td>✓</td>
-    </tr>
-    <tr>
-      <td>Chrome 6</td>
-      <td>✓</td>
-      <td>✓</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Opera 10.5+</td>
-      <td>✓</td>
-      <td></td>
-      <td>✓</td>
-    </tr> 
-    <tr>
-      <td>Internet Explorer 9 (beta)</td>
-      <td></td>
-      <td>✓</td>
-      <td>✓</td>
-    </tr>
-  </tbody>
-</table> 
+	<audio autoplay controls loop preload>
+		<source src="../assets/snds/Josh-Woodward-Swansong.ogg" />
+		<source src="../assets/snds/Josh-Woodward-Swansong.mp3" />
+	</audio>
 
+	<p>That song is "Swansong" from Ubuntu showcase by Josh-Woodward</p>
 
-audio in IE9
-	 	 	 	 AAC or MP3 format
-	 	 	 	 VP8 video, if you have the VP8 codec installed
-
+  <table>
+    <caption>Audio codec support in browsers</caption>
+    <thead>
+      <tr>
+        <th>Codecs/container</th>
+        <th title="Internet Explorer">IE</th>
+        <th title="Mozilla Firefox">Firefox</th>
+        <th title="Apple Safari">Safari</th>
+        <th title="Google Chrome">Chrome</th>
+        <th>Opera</th>
+        <th>iPhone</th>
+        <th>Android</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Ogg Vorbis</th>
+        <td></td>
+        <td>3.6+</td>
+        <td></td>
+        <td>6.0+</td>
+        <td>10.5+</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>MP3</th>
+        <td>9.0+</td>
+        <td></td>
+        <td>5.0+</td>
+        <td>6.0+</td>
+        <td>10.5+</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>WAV</th>
+        <td></td>
+        <td>3.5+</td>
+        <td>4.0+</td>
+        <td></td>
+        <td>10.5+</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>
 
