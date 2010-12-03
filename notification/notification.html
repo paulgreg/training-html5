@@ -27,8 +27,6 @@
 				"I would like to notify something important"
 			);
 			Notifier.notification.ondisplay = function() {
-				var audio = new Audio("../assets/notification.mp3");
-				audio.play();
 				window.setTimeout("Notifier.notification.cancel()", 5000);
 			}
 			Notifier.notification.show();
