@@ -1,0 +1,27 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<title>CSS3 text manipulation</title> 
+	<style type="text/css"> 
+    body { font-size: 1.4em; }
+    .shadow1 {  -webkit-box-shadow: 1px 1px 3px #292929;  -moz-box-shadow: 1px 1px 3px #292929;  box-shadow: 1px 1px 3px #292929; background-color: #E0E0EE; }
+    .shadow2 { -webkit-box-shadow: 1px 1px 3px green, -1px -1px blue;  -moz-box-shadow: 1px 1px 3px green,-1px -1px blue;  box-shadow: 1px 1px 3px green, -1px -1px blue;  }
+    .text-shadow { text-shadow: 0 1px 0 grey; color: orange; }
+    .text-outline { text-shadow: 0 1px 0 black, 0 -1px 0 black, 1px 0 0 black, -1px 0 0 black; color: white; }
+    .text-stroke { -webkit-text-stroke: 1px black; color: white; }
+    .text-overflow { -o-text-overflow: ellipsis; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; }
+    .text-overflow:hover {  white-space: normal; }  
+	</style> 
+</head> 
+<body> 
+	<h1>CSS3 text manipulation</h1> 
+	<p class="shadow1">Simple shadow</p> 
+	<p class="shadow2">Another shadow</p> 
+	<p class="text-shadow">Text shadow</p>
+	<p class="text-outline">Text outline</p>
+	<p class="text-stroke">Text stroke, only for webkit browsers</p>
+	<p class="text-overflow">A long text follow here. Works even on IE6 ! Put the mouse over me to show the full text : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+	<p style="color: green;">Working on Chromium 6+, FF 3.6+</p> 
+</body> 
+</html> 
