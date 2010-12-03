@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Video support</title>
+	<style>
+		body				{ text-align: center; }
+		video				{ width: 592px; height: 256px; }
+		video, canvas	{ margin: 1em 0; }
+		#copy				{ display: none; }
+	</style>
+	<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			var 	video = document.querySelector('video'),
+					copy = document.getElementById('copy'),
+					out = document.getElementById('out');
+
+			var copyCtx = copy.getContext('2d'),
+				outCtx = out.getContext('2d');
+
+			video.addEventListener('play', function() {
+
+				copy.width = video.clientWidth;
+				copy.height = video.clientHeight;
+				out.width = video.clientWidth;
+				out.height = video.clientHeight;
+
+				draw(video, outCtx, copyCtx, video.clientWidth, video.clientHeight);
+			}, false);
+		}, false);
+
+		function draw(video, out, copy, width, height) {
+			if(video.paused || video.ended) return false;
+
+			copy.drawImage(video, 0, 0, width, height); // First, copy the current image in an invisible
+			
+			var idata = copy.getImageData(0, 0, width, height); // Get pixels from that canvas
+			var data = idata.data;
+			
+			for(var i = 0; i < data.length; i+=4) { // Change to greyscale
+				var r = data[i];
+				var g = data[i+1];
+				var b = data[i+2];
+				var brightness = (3*r+4*g+b)>>>3;
+				data[i] = brightness;
+				data[i+1] = brightness;
+				data[i+2] = brightness;
+			}
+			idata.data = data;
+
+			out.putImageData(idata,0,0); // Draw pixels on the visible canvas
+
+			setTimeout(function(){ 
+				draw(video, out, copy, width, height);
+			}, 25); // Again !
+		}
+	</script>
+</head>
+<body>
+	<h1>Video manipulation</h1>
+	<video autoplay controls loop preload>
+		<source src="../assets/vids/vid.ogv" />
+		<source src="../assets/vids/vid.mp4" />
+		This content appears if the video tag or the codec is not supported.
+	</video>
+	<canvas id="copy"></canvas> 
+	<canvas id="out"></canvas> 
+	<p style="color: green;">Working on Firefox 3.6+, Chromium 7+</p>
+</body>
+</html>
+
