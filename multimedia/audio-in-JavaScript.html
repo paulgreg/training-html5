@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Audio exemple</title>
+	<script>
+		window.addEventListener("load", function() {
+
+			var 	play = document.getElementById('play'),
+					time = document.getElementById('time');
+
+			var mp3 = new Audio("../assets/snds/Josh-Woodward-Swansong.mp3");
+			var ogg = new Audio("../assets/snds/Josh-Woodward-Swansong.ogg");
+
+			var audio = null;
+			if (mp3.canPlayType('audio/mp3'))
+				audio = mp3;
+			else if (ogg.canPlayType('audio/ogg'))
+				audio = ogg;
+
+			play.addEventListener("click", function() {
+				if (audio.paused) {
+					audio.play();
+					play.innerHTML = 'Playing... ';
+				} else {
+					audio.pause();
+					play.innerHTML = 'Paused at ';
+				}
+				
+				var i = setInterval(function() {
+					if (!audio.ended) {
+						if (!audio.paused)
+							time.innerHTML = parseInt(audio.currentTime, 10) + ' seconds ellapsed';
+					} else
+						clearInterval(i);
+				}, 1000);
+			}, false);
+		}, false);
+	</script>
+</head>
+<body>
+	<h1>Audio exemple in JavaScript</h1>
+	<p><a href="#" id="play">play</a>&nbsp;<span id="time"></span></p>
+	<p style="color: green;">Working on Chrome 7+, FF 3.6+</p>
+</body>
+</html>
