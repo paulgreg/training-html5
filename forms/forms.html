@@ -3,40 +3,29 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
-	<title>New HTML5 tags</title>
-	<style type="text/css">
-	</style>
+	<title>New HTML5 form tags</title>
+  <style>
+    body    { background-color: #E3E9EF }
+    label     { display: block; }
+    legend    { border: 1px solid black; background-color: black; color: white; font-size: 1.1em; }
+    fieldset { border: 1px solid black; background-color: white; }
+  </style>
 </head>
 <body>
-	<form id=payment>
+	<form id="formSample">
 		<fieldset>
-			<legend>Your details</legend>
-			<ol>
-				<li>
-					<label for=name>Name</label>
-					<input id=name name=name type=text placeholder="First and last name" required autofocus>
-				</li>
-				<li>
-					<label for=email>Email</label>
-					<input id=email name=email type=email placeholder="example@domain.com" required>
-				</li>
-				<li>
-					<label for=phone>Phone</label>
-					<input id=phone name=phone type=tel placeholder="Eg. +447500000000" required>
-				</li>
-			</ol>
-		</fieldset>
-		<fieldset>
-			<legend>Card details</legend>
-			<ol>		
-				<li>
-					<label for=cardnumber>Card number</label>
-					<input id=cardnumber name=cardnumber type=number required>
-				</li>
-			</ol>
-		</fieldset>
-		<fieldset>
-			<button type=submit>Buy it!</button>
+      <legend>New HTML5 inputs</legend>
+				<label>Name <input id=name name=name type=text placeholder="First and last name" required autofocus></label>
+				<label>Email <input id=email name=email type=email placeholder="example@domain.com" required></label>
+				<label>Phone <input id=phone name=phone type=tel placeholder="Eg. +447500000000" required></label>
+        <label>Date <input type=date name=date title="Date (yyyy-mm-dd)" value="2009-01-15" required></label>
+        <label>Time <input type=time name="myTime" title="Hour (hh:mn)"     value="08:16"      required></label>
+        <label>Number <input type=number name=number title="Number"  value="10" min="8" max="12" step="2" required></label>
+        <label>Range <input type=range  name=range value="0"  title="A range" min="0" max="10" step="2"></label>
+        <label>Color <input type=color name=color title="Color"></label>
+        <label>URL <input type=url   name=color   title="URL" value="http://www.google.com" required></label>
+        <label>French phone (pattern) <input type=tel name=tel title="N° à 10 chiffres sans espace" pattern="^0[1-689][0-9]{8}$" placeholder="0601020304" required></label>
+        <input type="submit">
 		</fieldset>
 	</form>
 </body>
