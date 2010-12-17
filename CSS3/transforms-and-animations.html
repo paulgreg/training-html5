@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3 transformation</title> 
+	<style type="text/css"> 
+    .box { border: 1px solid orange; }
+		.rotate { -moz-transform: rotate(-30deg); -webkit-transform: rotate(-30deg); width: 4em; }
+		.translate {  -moz-transform: translate(10em,1em); -webkit-transform: translate(10em,1em); width: 5em;}
+		.scale { margin: 3em; -moz-transform:  scale(2); -webkit-transform:  scale(2); width: 4em;}
+
+		.rotate:hover { 
+      -webkit-transition: all 1s ease-in-out; -moz-transition: all 1s ease-in-out; -o-transition: all 1s ease-in-out;
+      -moz-transform: rotate(330deg); -webkit-transform: rotate(330deg); 
+    }
+		.translate:hover {  
+      -webkit-transition: all 1s ease-in-out; -moz-transition: all 1s ease-in-out; -o-transition: all 1s ease-in-out;
+      -moz-transform: translate(20em,10em); -webkit-transform: translate(20em,10em);
+    }
+		.scale:hover {
+      -webkit-transition: all 1s ease-in-out; -moz-transition: all 1s ease-in-out; -o-transition: all 1s ease-in-out;
+      margin: 7em; -moz-transform: scale(4); -webkit-transform: scale(4); 
+    }
+	</style>
+</head>
+<body> 
+	<h1>CSS3 transformation</h1> 
+	<p style="color: green;">Working on Chromium 6+, FF 3.6, Safari Mobile ?</p> 
+	<p class="box rotate">Rotation</p> 
+	<p class="box translate">Translation</p>
+	<p class="box scale">Scale x 2</p> 
+</body> 
+</html> 
