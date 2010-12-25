@@ -6,7 +6,7 @@
 	<title>New HTML5 tags</title>
 	<style type="text/css">
 		body { font-family: sans-serif; }
-    a { color: #030303; }
+    	a { color: #030303; }
 		nav { float: right; }
 		nav ul { list-style: none; }
 		nav ul li { display: inline; margin: 0.25em; }
@@ -15,6 +15,9 @@
 		time  { font-style: italic; color: grey; }
 		footer { border-top: 1px solid black; text-align: right; }
 	</style>
+	<link rel="icon" href="../../favicon.png"/>
+	<link rel="pingback" href="http://myblog.com/xmlrpc.php"/>
+	<link rel="prefetch" href="/someotherpage.html"/>
 </head>
 <body>
 	<header>
@@ -26,9 +29,11 @@
 	<nav>
 		<ul>
 			<li><a href="#">Home</a></li>
-			<li><a href="#">Categories</a></li>
-			<li><a href="#">About me</a></li>
-			<li><a href="#">Contact</a></li>
+			<li><a rel="tag" href="#">HTML5 posts</a></li>
+			<li><a rel="archives" href="#">Old posts</a></li>
+			<li><a rel="nofollow" href="#">Contact</a></li>
+			<li><a rel="external" href="http://google.fr">About me</a></li>
+			<li><a rel="license" href="http://www.apache.org/licenses/LICENSE-2.0">License</a></li>
 		</ul>
 	</nav>
 	<section>
