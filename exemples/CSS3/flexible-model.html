@@ -1,0 +1,39 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="UTF-8"> 
+	<title>CSS3 Flexible model</title> 
+	<style type="text/css"> 
+    section { margin: 1em auto; border: 1px solid black; width: 400px; height: 200px; }
+    .box  { min-width: 2em; }
+    .b1 { background-color: #CCFFFF; }
+    .b2 { background-color: #CCFFCC; }
+    .b3 { background-color: #CCCCFF; }
+    .f1  {  box-flex: 1; -webkit-box-flex: 1; }
+    .f2  {  box-flex: 2; -webkit-box-flex: 2; }
+    #exemple1 { 
+      display : -moz-box; display : -webkit-box; display : box;
+      -moz-box-orient: horizontal; -webkit-box-orient: horizontal; box-orient: horizontal;
+    }
+    #exemple2 { 
+      display : -moz-box; display : -webkit-box; display : box;
+      -moz-box-orient : vertical; -moz-box-pack : center; -moz-box-align : center;
+      -webkit-box-orient : vertical; -webkit-box-pack : center; -webkit-box-align : center;
+      box-orient : vertical;  box-pack : center;  box-align : center;
+    }
+	</style>
+</head> 
+<body> 
+  <h1>CSS3 Flexible model</h1>
+  <section id="exemple1">
+    <div class="box b1 f1">1</div>
+    <div class="box b2 f1">2</div>
+    <div class="box b3 f2">3</div>
+  </section>
+  <section id="exemple2">
+    <div class="box b1">1</div>
+    <div class="box b2">2</div>
+    <div class="box b3">3</div>
+   </section>
+</body> 
+</html> 
