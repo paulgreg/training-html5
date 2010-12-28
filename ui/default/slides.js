@@ -781,7 +781,7 @@ function touchMove( e ) {
 
 	e.preventDefault();
 	var targetEvent =  e.touches.item(0);
-	var step = targetEvent.clientX - xPosTouchStart;
+	var step = xPosTouchStart - targetEvent.clientX;
 	if (step > 0)
 		go(1);
 	else
