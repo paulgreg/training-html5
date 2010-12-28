@@ -8,300 +8,302 @@
   </style>
 </head>
 <body>
-  <h1>Databases</h1>
-  <section id="indexed-db">
-    <h3>Indexed DB <a href="http://dvcs.w3.org/hg/IndexedDB/raw-file/tip/Overview.html">API</a></h3>
-<div class="center" id="indexeddb-example"> 
-            <input type="text" placeholder="key" id="idb-key" size="10" /> <input type="text" placeholder="value" id="idb-value" size="15" /> 
-            <button onclick="indexedDbSample.idbSet()">set</button> 
-            <button onclick="indexedDbSample.idbCreate()">create objectStore</button> 
-            <button onclick="indexedDbSample.idbRemove()">remove objectStore</button> 
-            <div id="idb-log"></div> 
-            <div class="record-list" id="idb-results-wrapper"></div> 
-          </div> 
-          <script defer> 
-            var indexedDbSample = (function() {
-              var idb_;
-              var idbRequest_;
-              var idbLog_ = document.getElementById('idb-log');
-              var idResultsWrapper_ = document.getElementById('idb-results-wrapper');
- 
-              // IndexedDB spec is still evolving, various browsers keep it
-              // behind various flags and implementation varies.
-              if ('webkitIndexedDB' in window) {
-                window.indexedDB = window.webkitIndexedDB;
-                window.IDBTransaction = window.webkitIDBTransaction;
-              } else if ('moz_indexedDB' in window) {
-                window.indexedDB = window.moz_indexedDB;
-              }
- 
-              // Open our IndexedDB if the browser supports it.
-              if (window.indexedDB) {
-                idbRequest_ = window.indexedDB.open("Test", "A test object store.");
-                idbRequest_.onerror = idbError_;
-                idbRequest_.addEventListener('success', function(event) {
-                  idb_ = event.result;
-                  idbShow_(event);
-                }, false);
-              }
- 
-              function idbError_(event) {
-                idbLog_.innerHTML += '<p class="error">Error: ' +
-                                     event.message + ' (' + event.code + ')</p>';
-              }
- 
-              function idbShow_(event) {
-                if (!idb_.objectStoreNames.contains('myObjectStore')) {
-                  idbLog_.innerHTML = "<p>Object store not yet created.</p>";
-                  return;
-                }
- 
-                var html = [];
-                var transaction = idb_.transaction([], IDBTransaction.READ_ONLY); // Ready is default.
-                var request = transaction.objectStore("myObjectStore").openCursor(); // Get all results.
-                // This callback will continue to be called until we have no more results.
-                request.onsuccess = function(e) {
-                  var cursor = e.result;
-                  if (!cursor) {
-                    idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
-                    return;
-                  }
-                  html.push('<li><span class="keyval" contenteditable onblur="indexedDbSample.updateKey(\'',
-                            cursor.key, '\', this)">', cursor.key, '</span> ',
-                            '=> <span class="keyval" contenteditable onblur="indexedDbSample.updateValue(\'',
-                            cursor.key, '\', this)">', cursor.value, '</span>&nbsp; ',
-                            '<a href="javascript:void(0)" onclick="indexedDbSample.deleteKey(\'',
-                            cursor.key, '\')">[Delete]</a></li>');
-                  cursor.continue();
-                }
-                request.onerror = idbError_;
-              }
- 
-              function idbCreate_() {
-                if (!idb_) {
-                  if (idbRequest_) {
-                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
-                  }
-                  return;
-                }
- 
-                var request = idb_.setVersion('the new version string');
-                request.onerror = idbError_;
-                request.onsuccess = function(e) {
-                  if (!idb_.objectStoreNames.contains('myObjectStore')) {
-                    try {
-                      var objectStore = idb_.createObjectStore('myObjectStore', null); // FF is requiring the 2nd keyPath arg. It can be optional :(
-                      idbLog_.innerHTML = "<p>Object store created.</p>";
-                    } catch (err) {
-                      idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
-                    }
-                  } else {
-                    idbLog_.innerHTML = '<p class="error">Object store already exists.</p>';
-                  }
-                }
-              }
- 
-              function idbSet_() {
-                if (!idb_) {
-                  if (idbRequest_) {
-                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
-                  }
-                  return;
-                }
- 
-                if (!idb_.objectStoreNames.contains('myObjectStore')) {
-                  idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
-                  return;
-                }
- 
-                 // Create a transaction that locks the world.
-                var objectStore = idb_.transaction([], IDBTransaction.READ_WRITE)
-                                      .objectStore("myObjectStore");
-                var request = objectStore.put(
-                    document.getElementById('idb-value').value,
-                    document.getElementById('idb-key').value);
-                request.onerror = idbError_;
-                request.onsuccess = idbShow_;
-              }
- 
-              function updateKey_(key, element) {
-                var newKey = element.textContent;
-                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
-                var objectStore = transaction.objectStore("myObjectStore");
-                var request = objectStore.get(key);
-                request.onerror = idbError_;
-                request.onsuccess = function(event) {
-                  var value = event.result;
-                  if (objectStore.delete) {
-                    var request = objectStore.delete(key);
-                  } else {
-                    var request = objectStore.remove(key);
-                  }
-                  request.onerror = idbError_;
-                  request.onsuccess = function(event) {
-                    var request = objectStore.add(value, newKey);
-                    request.onerror = idbError_;
-                    request.onsuccess = idbShow_;
-                  };
-                };
-              }
- 
-              function updateValue_(key, element) {
-                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
-                var objectStore = transaction.objectStore("myObjectStore");
-                var request = objectStore.put(element.textContent, key);
-                request.onerror = idbError_;
-                request.onsuccess = idbShow_;
-              }
- 
-              function deleteKey_(key) {
-                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
-                var objectStore = transaction.objectStore("myObjectStore");
-                if (objectStore.delete) {
-                  var request = objectStore.delete(key);
-                } else {
-                  var request = objectStore.remove(key);
-                }
-                request.onerror = idbError_;
-                request.onsuccess = idbShow_;
-              }
- 
-              function idbRemove_() {
-                if (!idb_) {
-                  if (idbRequest_) {
-                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
-                  }
-                  return;
-                }
- 
-                var request = idb_.setVersion("the new version string");
-                request.onerror = idbError_;
-                request.onsuccess = function(event) {
- 
-                  if (idb_.objectStoreNames.contains('myObjectStore')) {
-                    try {
-                      // Spec has been updated to deleteObjectStore.
-                      if (idb_.deleteObjectStore) {
-                        idb_.deleteObjectStore('myObjectStore');
-                      } else {
-                        idb_.removeObjectStore('myObjectStore');
-                      }
-                      idResultsWrapper_.innerHTML = '';
-                      idbLog_.innerHTML = "<p>Object store removed.</p>";
-                    } catch (err) {
-                      idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
-                    }
-                  } else {
-                    idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
-                  }
-                };
-              }
- 
-              return {
-                idbSet: idbSet_,
-                idbCreate: idbCreate_,
-                idbRemove: idbRemove_,
-                updateKey: updateKey_,
-                updateValue: updateValue_,
-                deleteKey: deleteKey_
-              }
-            })();
-          </script>
-  </section>
-  <section id="web-sql-db">
-    <h3>SQL Database <a href="http://dev.w3.org/html5/webdatabase/">API</a> (Deprecated)</h3>
-    <div class="center" id="websqldb-example"> 
-            <input type="text" id="todoitem" /> 
-            <button onclick="webSqlSample.newRecord()">new to do item</button> 
-            <button onclick="webSqlSample.createTable()">create table</button> 
-            <button onclick="webSqlSample.dropTable()">drop table</button> 
-            <p>See the generated database: Developer > Developer Tools > Storage</p> 
-            <ul class="record-list" id="db-results"></ul> 
-            <div id="db-log"></div> 
-    </div> 
-  </section>
-  <script>
-      var webSqlSample = (function() {
-      var db;
-      var log = document.getElementById('db-log');
-      if (window.openDatabase) {
-        db = openDatabase("DBTest", "1.0", "HTML5 Database API example", 200000);
-        showRecords();  
-      }
-      document.getElementById('db-results').addEventListener('click', function(e) { e.preventDefault(); }, false);
+	<h1>Databases</h1>
+	<section id="indexed-db">
+		<h3>Indexed DB <a href="http://dvcs.w3.org/hg/IndexedDB/raw-file/tip/Overview.html">API</a></h3>
+		<div class="center" id="indexeddb-example"> 
+			<input type="text" placeholder="key" id="idb-key" size="10" /> <input type="text" placeholder="value" id="idb-value" size="15" /> 
+			<button onclick="indexedDbSample.idbSet()">set</button> 
+			<button onclick="indexedDbSample.idbCreate()">create objectStore</button> 
+			<button onclick="indexedDbSample.idbRemove()">remove objectStore</button> 
+			<div id="idb-log"></div> 
+			<div class="record-list" id="idb-results-wrapper"></div> 
+		</div> 
+		<script> 
+		  var indexedDbSample = (function() {
+		  var idb_;
+		  var idbRequest_;
+		  var idbLog_ = document.getElementById('idb-log');
+		  var idResultsWrapper_ = document.getElementById('idb-results-wrapper');
 
-      function onError(tx, error) {
-        log.innerHTML = '<p class="error">Error: ' + error.message + '</p>';
-      }
+		  // IndexedDB spec is still evolving, various browsers keep it
+		  // behind various flags and implementation varies.
+		  if ('webkitIndexedDB' in window) {
+			 window.indexedDB = window.webkitIndexedDB;
+			 window.IDBTransaction = window.webkitIDBTransaction;
+		  } else if ('moz_indexedDB' in window) {
+			 window.indexedDB = window.moz_indexedDB;
+		  }
 
-      // select all records and display them
-      function showRecords() {
-        document.getElementById('db-results').innerHTML = '';
-        db.transaction(function(tx) {
-          tx.executeSql("SELECT * FROM Table1Test", [], function(tx, result) {
-            for (var i = 0, item = null; i < result.rows.length; i++) {
-              item = result.rows.item(i);
-              document.getElementById('db-results').innerHTML += 
-                  '<li><span contenteditable="true" onkeyup="webSqlSample.updateRecord('+item['id']+', this)">'+
-                  item['text'] + '</span> <a href="#" onclick="webSqlSample.deleteRecord('+item['id']+')">[Delete]</a></li>';
-            }
-          });
-        });
-      }
+		  // Open our IndexedDB if the browser supports it.
+		  if (window.indexedDB) {
+			 idbRequest_ = window.indexedDB.open("Test", "A test object store.");
+			 idbRequest_.onerror = idbError_;
+			 idbRequest_.addEventListener('success', function(event) {
+				idb_ = event.result;
+				idbShow_(event);
+			 }, false);
+		  }
 
-      function createTable() {
-        db.transaction(function(tx) {
-          tx.executeSql("CREATE TABLE Table1Test (id REAL UNIQUE, text TEXT)", [],
-              function(tx) {  log.innerHTML = '<p>"Table1Test" created!</p>' },
-              onError);
-        });
-      }
+		  function idbError_(event) {
+			 idbLog_.innerHTML += '<p class="error">Error: ' +
+						             event.message + ' (' + event.code + ')</p>';
+		  }
 
-      // add record with random values
-      function newRecord() {
-        var num = Math.round(Math.random() * 10000); // random data
-        db.transaction(function(tx) {
-          tx.executeSql("INSERT INTO Table1Test (id, text) VALUES (?, ?)", [num, document.querySelector('#todoitem').value],
-              function(tx, result) {
-                log.innerHTML = '';
-                showRecords();
-              }, 
-              onError);
-        });
-      }
+		  function idbShow_(event) {
+			 if (!idb_.objectStoreNames.contains('myObjectStore')) {
+				idbLog_.innerHTML = "<p>Object store not yet created.</p>";
+				return;
+			 }
 
-      function updateRecord(id, textEl) {
-        db.transaction(function(tx) {
-          tx.executeSql("UPDATE Table1Test SET text = ? WHERE id = ?", [textEl.innerHTML, id], null, onError);
-        });
-      }
+			 var html = [];
+			 var transaction = idb_.transaction([], IDBTransaction.READ_ONLY); // Ready is default.
+			 var request = transaction.objectStore("myObjectStore").openCursor(); // Get all results.
+			 // This callback will continue to be called until we have no more results.
+			 request.onsuccess = function(e) {
+				var cursor = e.result;
+				if (!cursor) {
+				  idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
+				  return;
+				}
+				html.push('<li><span class="keyval" contenteditable onblur="indexedDbSample.updateKey(\'',
+						    cursor.key, '\', this)">', cursor.key, '</span> ',
+						    '=> <span class="keyval" contenteditable onblur="indexedDbSample.updateValue(\'',
+						    cursor.key, '\', this)">', cursor.value, '</span>&nbsp; ',
+						    '<a href="javascript:void(0)" onclick="indexedDbSample.deleteKey(\'',
+						    cursor.key, '\')">[Delete]</a></li>');
+				cursor.continue();
+			 }
+			 request.onerror = idbError_;
+		  }
 
-      function deleteRecord(id) {
-        db.transaction(function(tx) {
-          tx.executeSql("DELETE FROM Table1Test WHERE id=?", [id],
-              function(tx, result) { showRecords() }, 
-              onError);
-        });
-      }
+		  function idbCreate_() {
+			 if (!idb_) {
+				if (idbRequest_) {
+				  idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+				}
+				return;
+			 }
 
-      // delete table from db
-      function dropTable() {
-        db.transaction(function(tx) {
-          tx.executeSql("DROP TABLE Table1Test", [],
-              function(tx) { showRecords() }, 
-              onError);
-        });
-      }
-      
-      return {
-        newRecord: newRecord,
-        createTable: createTable,
-        updateRecord: updateRecord,
-        deleteRecord: deleteRecord,
-        dropTable: dropTable
-      }
-    })();
-  </script>
-  <a href="http://slides.html5rocks.com/#web-sql-db">Exemples from http://slides.html5rocks.com/</a>
+			 var request = idb_.setVersion('the new version string');
+			 request.onerror = idbError_;
+			 request.onsuccess = function(e) {
+				if (!idb_.objectStoreNames.contains('myObjectStore')) {
+				  try {
+					 var objectStore = idb_.createObjectStore('myObjectStore', null); // FF is requiring the 2nd keyPath arg. It can be optional :(
+					 idbLog_.innerHTML = "<p>Object store created.</p>";
+				  } catch (err) {
+					 idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
+				  }
+				} else {
+				  idbLog_.innerHTML = '<p class="error">Object store already exists.</p>';
+				}
+			 }
+		  }
+
+		  function idbSet_() {
+			 if (!idb_) {
+				if (idbRequest_) {
+				  idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+				}
+				return;
+			 }
+
+			 if (!idb_.objectStoreNames.contains('myObjectStore')) {
+				idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
+				return;
+			 }
+
+			  // Create a transaction that locks the world.
+			 var objectStore = idb_.transaction([], IDBTransaction.READ_WRITE)
+						              .objectStore("myObjectStore");
+			 var request = objectStore.put(
+				  document.getElementById('idb-value').value,
+				  document.getElementById('idb-key').value);
+			 request.onerror = idbError_;
+			 request.onsuccess = idbShow_;
+		  }
+
+		  function updateKey_(key, element) {
+			 var newKey = element.textContent;
+			 var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+			 var objectStore = transaction.objectStore("myObjectStore");
+			 var request = objectStore.get(key);
+			 request.onerror = idbError_;
+			 request.onsuccess = function(event) {
+				var value = event.result;
+				if (objectStore.delete) {
+				  var request = objectStore.delete(key);
+				} else {
+				  var request = objectStore.remove(key);
+				}
+				request.onerror = idbError_;
+				request.onsuccess = function(event) {
+				  var request = objectStore.add(value, newKey);
+				  request.onerror = idbError_;
+				  request.onsuccess = idbShow_;
+				};
+			 };
+		  }
+
+		  function updateValue_(key, element) {
+			 var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+			 var objectStore = transaction.objectStore("myObjectStore");
+			 var request = objectStore.put(element.textContent, key);
+			 request.onerror = idbError_;
+			 request.onsuccess = idbShow_;
+		  }
+
+		  function deleteKey_(key) {
+			 var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+			 var objectStore = transaction.objectStore("myObjectStore");
+			 if (objectStore.delete) {
+				var request = objectStore.delete(key);
+			 } else {
+				var request = objectStore.remove(key);
+			 }
+			 request.onerror = idbError_;
+			 request.onsuccess = idbShow_;
+		  }
+
+		  function idbRemove_() {
+			 if (!idb_) {
+				if (idbRequest_) {
+				  idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+				}
+				return;
+			 }
+
+			 var request = idb_.setVersion("the new version string");
+			 request.onerror = idbError_;
+			 request.onsuccess = function(event) {
+
+				if (idb_.objectStoreNames.contains('myObjectStore')) {
+				  try {
+					 // Spec has been updated to deleteObjectStore.
+					 if (idb_.deleteObjectStore) {
+						idb_.deleteObjectStore('myObjectStore');
+					 } else {
+						idb_.removeObjectStore('myObjectStore');
+					 }
+					 idResultsWrapper_.innerHTML = '';
+					 idbLog_.innerHTML = "<p>Object store removed.</p>";
+				  } catch (err) {
+					 idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
+				  }
+				} else {
+				  idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
+				}
+			 };
+		  }
+
+		  return {
+			 idbSet: idbSet_,
+			 idbCreate: idbCreate_,
+			 idbRemove: idbRemove_,
+			 updateKey: updateKey_,
+			 updateValue: updateValue_,
+			 deleteKey: deleteKey_
+		  }
+		})();
+		</script>
+		<p style="color: green;">Working on Chrome 9+, Firefox 4</p> 
+	</section>
+	<section id="web-sql-db">
+		<h3>SQL Database <a href="http://dev.w3.org/html5/webdatabase/">API</a> (Deprecated)</h3>
+		<div class="center" id="websqldb-example"> 
+			<input type="text" id="todoitem" /> 
+			<button onclick="webSqlSample.newRecord()">new to do item</button> 
+			<button onclick="webSqlSample.createTable()">create table</button> 
+			<button onclick="webSqlSample.dropTable()">drop table</button> 
+			<p>See the generated database: Developer > Developer Tools > Storage</p> 
+			<ul class="record-list" id="db-results"></ul> 
+			<div id="db-log"></div> 
+		</div> 
+		<script>
+			var webSqlSample = (function() {
+			var db;
+			var log = document.getElementById('db-log');
+			if (window.openDatabase) {
+			  db = openDatabase("DBTest", "1.0", "HTML5 Database API example", 200000);
+			  showRecords();  
+			}
+			document.getElementById('db-results').addEventListener('click', function(e) { e.preventDefault(); }, false);
+
+			function onError(tx, error) {
+			  log.innerHTML = '<p class="error">Error: ' + error.message + '</p>';
+			}
+
+			// select all records and display them
+			function showRecords() {
+			  document.getElementById('db-results').innerHTML = '';
+			  db.transaction(function(tx) {
+				 tx.executeSql("SELECT * FROM Table1Test", [], function(tx, result) {
+					for (var i = 0, item = null; i < result.rows.length; i++) {
+					  item = result.rows.item(i);
+					  document.getElementById('db-results').innerHTML += 
+							'<li><span contenteditable="true" onkeyup="webSqlSample.updateRecord('+item['id']+', this)">'+
+							item['text'] + '</span> <a href="#" onclick="webSqlSample.deleteRecord('+item['id']+')">[Delete]</a></li>';
+					}
+				 });
+			  });
+			}
+
+			function createTable() {
+			  db.transaction(function(tx) {
+				 tx.executeSql("CREATE TABLE Table1Test (id REAL UNIQUE, text TEXT)", [],
+					  function(tx) {  log.innerHTML = '<p>"Table1Test" created!</p>' },
+					  onError);
+			  });
+			}
+
+			// add record with random values
+			function newRecord() {
+			  var num = Math.round(Math.random() * 10000); // random data
+			  db.transaction(function(tx) {
+				 tx.executeSql("INSERT INTO Table1Test (id, text) VALUES (?, ?)", [num, document.querySelector('#todoitem').value],
+					  function(tx, result) {
+						 log.innerHTML = '';
+						 showRecords();
+					  }, 
+					  onError);
+			  });
+			}
+
+			function updateRecord(id, textEl) {
+			  db.transaction(function(tx) {
+				 tx.executeSql("UPDATE Table1Test SET text = ? WHERE id = ?", [textEl.innerHTML, id], null, onError);
+			  });
+			}
+
+			function deleteRecord(id) {
+			  db.transaction(function(tx) {
+				 tx.executeSql("DELETE FROM Table1Test WHERE id=?", [id],
+					  function(tx, result) { showRecords() }, 
+					  onError);
+			  });
+			}
+
+			// delete table from db
+			function dropTable() {
+			  db.transaction(function(tx) {
+				 tx.executeSql("DROP TABLE Table1Test", [],
+					  function(tx) { showRecords() }, 
+					  onError);
+			  });
+			}
+
+			return {
+			  newRecord: newRecord,
+			  createTable: createTable,
+			  updateRecord: updateRecord,
+			  deleteRecord: deleteRecord,
+			  dropTable: dropTable
+			}
+			})();
+		</script>
+		<p style="color: green;">Working on Chrome 8+, iOS 4.2</p> 
+	</section>
+	<a href="http://slides.html5rocks.com/#web-sql-db">Exemples from http://slides.html5rocks.com/</a>
 </body>
 </html>

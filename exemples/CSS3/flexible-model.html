@@ -9,8 +9,8 @@
     .b1 { background-color: #CCFFFF; }
     .b2 { background-color: #CCFFCC; }
     .b3 { background-color: #CCCCFF; }
-    .f1  {  box-flex: 1; -webkit-box-flex: 1; }
-    .f2  {  box-flex: 2; -webkit-box-flex: 2; }
+    .f1  {  -moz-box-flex: 1; -webkit-box-flex: 1; box-flex: 1; }
+    .f2  {  -moz-box-flex: 2; -webkit-box-flex: 2; box-flex: 2; }
     #exemple1 { 
       display : -moz-box; display : -webkit-box; display : box;
       -moz-box-orient: horizontal; -webkit-box-orient: horizontal; box-orient: horizontal;
@@ -34,6 +34,7 @@
     <div class="box b1">1</div>
     <div class="box b2">2</div>
     <div class="box b3">3</div>
-   </section>
+  </section>
+  <p style="color: green;">Working on Chrome 8+, Firefox 3.6+, iOS 4.2</p> 
 </body> 
 </html> 
