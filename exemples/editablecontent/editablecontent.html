@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ContentEditable</title>
+	<style>
+    table { border: 1px solid black; }
+    td  { border: 1px dashed grey; min-width: 4em; }
+    h1:hover, h2:hover, p:hover, li:hover, td:hover { background-color: #CFC; }
+  </style>
+</head>
+<body contenteditable="true">
+  <h1>ContentEditable</h1>
+  <section>
+    <h2>Everything on that page is editable!</h2>
+    <p>Here's a typical paragraph element</p>
+    <ol>
+      <li>and now a list</li>
+      <li>with only</li>
+      <li>three items</li>
+    </ol>
+    <table>
+      <tr><td>A</td><td>1</td></tr>
+      <tr><td>B</td><td>2</td></tr>
+    </table>
+  </section>
+  <p style="color: green;">Working on Chrome 8+, Firefox 3.6+, IE 6+</p> 
+</body>
+</html>

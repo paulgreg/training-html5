@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Custom data attributes</title>
+  <script>
+    function getCustomData() {
+      var el = document.querySelector('#user123');
+      var str = '';
+      for (var key in el.dataset) 
+        str += key + ': ' + el.dataset[key] + '  ;  '
+
+      alert(str);
+    }
+  </script>
+</head>
+<body>
+  <h1>Custom data attributes</h1>
+  <div id="user123" data-id="132" data-name="John Doe" data-screen-name="user1">User John Doe</div>
+  <a href="#" onclick="getCustomData();return false;">Get custom data attribute by JavaScript</a>
+  <p style="color: green;">Working on Chrome 8+</p> 
+</body>
+</html>

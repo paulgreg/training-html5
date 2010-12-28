@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>HTML5 Drag&amp;Drop</title>
+	<style>
+    section { margin: 0 0 em 0; }
+    #drop {  border: 1px solid black; background-color: #CFC; }
+    #logs { overflow-y: scroll; border: 1px solid black; height: 20em; }
+  </style>
+  <script> 
+    var log = null, overCount = 0;
+    
+    window.addEventListener("load", function() {
+      log = document.getElementById('logs');
+    }, true);
+
+    function drag(target, e) {
+      e.dataTransfer.setData('Text', target.id);
+      log.innerHTML = 'ondragstart event for ' + target.id + '<br/>' + log.innerHTML;
+    }
+
+    function drop(target, e) {
+      var id = e.dataTransfer.getData('Text');
+      log.innerHTML = 'ondrop event for ' + id + '<br/>' + log.innerHTML;
+      e.preventDefault();
+    }
+    
+    function enter(target, e) {
+      var id = e.dataTransfer.getData('Text');
+      log.innerHTML = 'ondragenter event for ' + id + '<br/>' + log.innerHTML;
+      e.preventDefault();
+    }
+    
+    function over(target, e) {
+      overCount++;
+      if (overCount % 10 == 0) { // Only get 1 of 10 event to avoid console flooding !
+        var id = e.dataTransfer.getData('Text');
+        log.innerHTML = 'ondragover event for ' + id + '<br/>' + log.innerHTML;
+      }
+      e.preventDefault();
+    }    
+  </script> 
+</head>
+<body>
+  <h1>HTML5 Drag&amp;Drop</h1>
+  <section>
+    <ul> 
+      <li draggable="true" id="dragme1" ondragstart="drag(this, event)">Drag me 1</li> 
+      <li draggable="true" id="dragme2" ondragstart="drag(this, event)">Drag me 2</li> 
+      <li draggable="true" id="dragme3" ondragstart="drag(this, event)">Drag me 2</li> 
+    </ul> 
+    <div id="drop" ondrop="drop(this, event)" ondragenter="enter(this, event)" ondragover="over(this, event)">
+      <h2>Here is the drop zone</h2>
+    </div>
+    <p style="color: green;">Working on Chrome 8+, Firefox 3.6+</p> 
+  </section>
+  <section>
+    <h2>Logs</h2>
+    <p id="logs"></p>
+  </section>
+</body>
+</html>

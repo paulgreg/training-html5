@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Classlist</title>
+	<style>
+    .highlight { background-color: yellow; }
+  </style>
+</head>
+<body>
+  <section>
+    <h1>Classlist</h1>
+    <p id="main">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  </section>
+  <section>
+    <h2>JavaScript class access</h2>
+    <ul>
+      <li><a href="#" onclick="document.querySelector('#main').classList.add('highlight'); return false;">querySelector('#main').classList.add('highlight')</a></li>
+      <li><a href="#" onclick="document.querySelector('#main').classList.remove('highlight'); return false;">querySelector('#main').classList.remove('highlight')</a></li>
+      <li><a href="#" onclick="document.querySelector('#main').classList.toggle('highlight');return false;">querySelector('#main').classList.toggle('highlight')</a></li>
+      <li><a href="#" onclick="alert(document.querySelector('#main').classList.contains('highlight'));return false;">querySelector('#main').classList.contains('highlight')</a></li>
+    </ul>
+  </section>
+  <p style="color: green;">Working on Chrome 8+, Firefox 3.6+</p> 
+</body>
+</html>

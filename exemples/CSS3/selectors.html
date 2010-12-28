@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3 selectors</title>
+	<style>
+    table { border: 1px solid black; }
+    tr:nth-child(even) { background: #dde; }
+    tr:nth-child(odd) { background: white; }
+    p:not(.text) { color: red; }
+  </style>
+</head>
+<body>
+  <section>
+    <h1>New CSS selectors</h1>
+    <table>
+      <tr><td>Row 1</td></tr>
+      <tr><td>Row 2</td></tr>
+      <tr><td>Row 3</td></tr>
+      <tr><td>Row 4</td></tr>
+    </table>
+    <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <p>Ut enim ad minim veniam, quis nostrud exercitation <strong>ullamco</strong> laboris nisi ut aliquip ex ea commodo consequat. </p>
+  </section>
+  <section>
+    <h2>JavaScript selector API</h2>
+    <ul>
+      <li><a href="#" onclick="alert(document.getElementsByClassName('text')[0].innerHTML);return false;">getElementsByClassName('text')[0].innerHTML</a></li>
+      <li><a href="#" onclick="alert(document.querySelectorAll('tr:nth-child(odd)').length);return false;">querySelectorAll("tr:nth-child(odd)").length</a></li>
+      <li><a href="#" onclick="alert(document.querySelector('p > strong').innerHTML);return false;">querySelector("p > strong").innerHTML</a></li>
+    </ul>
+  </section>
+  <p style="color: green;">Working on Chrome 8+, Firefox 3.6+</p> 
+</body>
+</html>

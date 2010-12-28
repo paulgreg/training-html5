@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Web Storage</title>
+	<style>
+    section { border: 1px solid black; margin: 2em 0.25em; padding: 0.25em; }
+  </style>
+  <script>
+    window.addEventListener("load", function() { // Note the 2 syntaxes
+      if (sessionStorage && sessionStorage['myKey'])
+        document.getElementById('session').value = sessionStorage['myKey'];
+      if (localStorage && localStorage['myKey'])
+        document.getElementById('local').value = localStorage.getitem('myKey');        
+        }
+    }, true);
+
+    function persist() {  // Note the 2 syntaxes
+      sessionStorage['myKey'] = document.getElementById('session').value;
+      localStorage.setItem('myKey', document.getElementById('local').value);
+    }
+  </script>
+</head>
+<body>
+  <h1>Web Storage</h1>
+  <section>
+    <h2>Session storage</h2>
+    <textarea id="session">Enter your message here</textarea>
+    <h2>Local storage</h2>
+    <textarea id="local">Enter your message here</textarea>
+    <p style="color: green;">Working on Chrome 8+</p> 
+  </section>
+  <button id="persist" onclick="persist();">Persist</button>
+</body>
+</html>
