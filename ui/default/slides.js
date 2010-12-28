@@ -757,7 +757,37 @@ function startup() {
 	}
 	document.onkeyup = keys;
 	document.onkeypress = trap;
-	document.onclick = clicker;
+	//document.onclick = clicker;
+
+	// iOS handling...
+	document.ontouchmove=touchMove;
+	document.ontouchstart=touchStart;
+}
+
+var xPosTouchStart = 0;
+var cancelNextMove = false;
+
+function touchStart( e ) {
+	var targetEvent =  e.touches.item(0);
+	xPosTouchStart = targetEvent.clientX;
+	e.preventDefault();
+	cancelNextMove = false;
+	return false;
+}
+
+function touchMove( e ) {
+	if (cancelNextMove)
+		return;
+
+	e.preventDefault();
+	var targetEvent =  e.touches.item(0);
+	var step = targetEvent.clientX - xPosTouchStart;
+	if (step > 0)
+		go(1);
+	else
+		go(-1);
+	cancelNextMove = true;
+	return false;
 }
 
 window.onload = startup;
