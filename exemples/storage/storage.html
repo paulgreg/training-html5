@@ -8,11 +8,10 @@
   </style>
   <script>
     window.addEventListener("load", function() { // Note the 2 syntaxes
-      if (sessionStorage && sessionStorage['myKey'])
-        document.getElementById('session').value = sessionStorage['myKey'];
+      if (sessionStorage && sessionStorage.getItem('myKey'))
+        document.getElementById('session').value = sessionStorage.getItem('myKey');
       if (localStorage && localStorage['myKey'])
-        document.getElementById('local').value = localStorage.getitem('myKey');        
-        }
+        document.getElementById('local').value = localStorage['myKey'];        
     }, true);
 
     function persist() {  // Note the 2 syntaxes
