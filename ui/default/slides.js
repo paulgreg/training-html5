@@ -770,16 +770,14 @@ var cancelNextMove = false;
 function touchStart( e ) {
 	var targetEvent =  e.touches.item(0);
 	xPosTouchStart = targetEvent.clientX;
-	e.preventDefault();
 	cancelNextMove = false;
-	return false;
+	return true; // return true to avoid blocking click !
 }
 
 function touchMove( e ) {
 	if (cancelNextMove)
 		return;
 
-	e.preventDefault();
 	var targetEvent =  e.touches.item(0);
 	var step = xPosTouchStart - targetEvent.clientX;
 	if (step > 0)
