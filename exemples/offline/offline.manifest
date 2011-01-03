@@ -1,8 +1,9 @@
 CACHE MANIFEST
-# manifest version 1.0.6
+# manifest version 1.0.7
 # files to cache
 index.html
 offline.js
+cached.html
 marylin.jpg
 
 # always on the network
