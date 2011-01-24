@@ -40,6 +40,7 @@
 			checkbox.addEventListener('click', function() {
 
 				var r = document.getElementById('result');
+				r.innerHTML = '';
 
 				if (checkbox.checked) {
 
@@ -50,7 +51,7 @@
 					worker.postMessage('{"min":' + begin + ', "max":' + end + '}');
 
 				} else {					
-					r.innerHTML = '<strong>Not Using WebWorkers</strong>: ';
+					r.innerHTML = '<strong>Not</strong> Using WebWorkers: ';
 					primeResolver = new PrimeResolver();
 					primeResolver.searchForPrime(begin, end, function(i) { r.innerHTML += i + ' '; });
 				}
@@ -66,7 +67,7 @@
 <body>
 	<h1>Prime resolver</h1>
 	<p>Clock: <span id="clock"></span></p>
-	<p><label for="webworkers">Use Web Workers ?</label><input type="checkbox" name="webworkers" id="webworkers" /></p>
+	<p><label for="webworkers">Use Web Workers ?</label><input type="checkbox" name="webworkers" id="webworkers" /> (check once to launch computation using webworkers, click then again to launch without webworkers)</p>
 	<p id="result"></p>
 	<p style="color: green;">Working on Chrome 8+, Firefox 3.6+</p>
 </body>
