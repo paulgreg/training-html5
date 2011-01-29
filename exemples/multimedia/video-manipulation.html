@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Video support</title>
+	<title>Video transformation</title>
 	<style>
 		body				{ text-align: center; }
 		video				{ width: 592px; height: 256px; }
@@ -10,6 +10,8 @@
 		#copy				{ display: none; }
 	</style>
 	<script>
+		var filterFunction = bw;
+
 		window.addEventListener('DOMContentLoaded', function() {
 			var 	video = document.querySelector('video'),
 					copy = document.getElementById('copy'),
@@ -19,7 +21,6 @@
 				outCtx = out.getContext('2d');
 
 			video.addEventListener('play', function() {
-
 				copy.width = video.clientWidth;
 				copy.height = video.clientHeight;
 				out.width = video.clientWidth;
@@ -27,6 +28,14 @@
 
 				draw(video, outCtx, copyCtx, video.clientWidth, video.clientHeight);
 			}, false);
+
+			var filter = document.getElementById('filter');
+			filter.addEventListener('change', function() {
+				if (filter.value == 'bw') filterFunction = bw;
+				else if (filter.value == 'red') filterFunction = red;
+				else if (filter.value == 'dot') filterFunction = dot;
+			});
+
 		}, false);
 
 		function draw(video, out, copy, width, height) {
@@ -35,9 +44,16 @@
 			copy.drawImage(video, 0, 0, width, height); // First, copy the current image in an invisible
 			
 			var idata = copy.getImageData(0, 0, width, height); // Get pixels from that canvas
-			var data = idata.data;
-			
-			for(var i = 0; i < data.length; i+=4) { // Change to greyscale
+			idata.data = filterFunction(idata.data); // Apply filter
+			out.putImageData(idata,0,0); // Draw pixels on the visible canvas
+
+			setTimeout(function(){ 
+				draw(video, out, copy, width, height);
+			}, 25); // Again but let 25 ms of delay !
+		}
+
+		function bw(data) { // Change to greyscale
+			for(var i = 0; i < data.length; i+=4) {
 				var r = data[i];
 				var g = data[i+1];
 				var b = data[i+2];
@@ -46,14 +62,27 @@
 				data[i+1] = brightness;
 				data[i+2] = brightness;
 			}
-			idata.data = data;
-
-			out.putImageData(idata,0,0); // Draw pixels on the visible canvas
-
-			setTimeout(function(){ 
-				draw(video, out, copy, width, height);
-			}, 25); // Again !
+			return data;
 		}
+
+		function red(data) {
+			for(var i = 0; i < data.length; i+=4) {
+				data[i] = data[i] + 30;
+				data[i+1] = data[i+1] - 30;
+				data[i+2] = data[i+2] - 30;
+			}
+			return data;
+		}
+
+		function dot(data) {
+			for(var i = 0; i < data.length; i+=16) {
+				data[i] = 0;
+				data[i+1] = 0;
+				data[i+2] = 0;
+			}
+			return data;
+		}
+
 	</script>
 </head>
 <body>
@@ -61,10 +90,17 @@
 	<video autoplay controls loop preload>
 		<source src="../assets/vids/vid.ogv" />
 		<source src="../assets/vids/vid.mp4" />
-		This content appears if the video tag or the codec is not supported.
 	</video>
-	<canvas id="copy"></canvas> 
-	<canvas id="out"></canvas> 
+	<p>
+		<label for="filter">Filter</label> :
+		<select id="filter">
+			<option value="bw">Black & White</option>
+			<option value="red">Red</option>
+			<option value="dot">Dot</option>
+		</select>
+	</p>
+	<canvas id="copy"></canvas>
+	<canvas id="out"></canvas>
 	<p style="color: green;">Working on Chromium 8+, Firefox 3.6+</p>
 </body>
 </html>
