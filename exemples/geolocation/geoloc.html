@@ -4,23 +4,28 @@
 	<meta charset="UTF-8">
 	<title>Geolocation support</title>
 	<script>
-		window.addEventListener("load", function() {
-			var pos = document.getElementById('position'),
-					map = document.getElementById('map');
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
+        window.addEventListener("load", function() {
+            var pos = document.getElementById('position'),
+            map = document.getElementById('map');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        var la = position.coords.latitude,
+                        lo = position.coords.longitude;
 
-					var la = position.coords.latitude,
-							lo = position.coords.longitude;
+                        pos.innerHTML = 'latitude: ' + la + ', longitude: ' + lo;
+                        map.href = map.href + la + ',' + lo;
+                    },
+                    function(error) {
+                        console.log('error', error);
+                        pos.innerHTML = 'Error:' + JSON.stringify(error);
+                    } 
+                );
+            } else {
+                pos.innerHTML = 'geolocation is not supported';
+            }
 
-      			pos.innerHTML = 'latitude: ' + la + ', longitude: ' + lo;
-					map.href = map.href + la + ',' + lo;
-				});
-			} else {
-				pos.innerHTML = 'geolocation is not supported';
-			}
-
-		}, false);
+        }, false);
 	</script>
 </head>
 <body>
