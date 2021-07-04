@@ -2,27 +2,51 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+    <style type="text/css">
+        body {
+            font-size: 24px;
+        }
+    </style>
 	<title>Geolocation support</title>
 	<script>
+        const url = 'https://www.openstreetmap.org/?zoom=12&mlat=LAT&mlon=LNG'
         window.addEventListener("load", function() {
-            var pos = document.getElementById('position'),
-            map = document.getElementById('map');
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        var la = position.coords.latitude,
-                        lo = position.coords.longitude;
+            const divPos = document.getElementById('position')
+            const map = document.getElementById('map')
+            const options = {
+                enableHighAccuracy: false,
+                timeout: 1000,
+                maximumAge: 0
+            }
 
-                        pos.innerHTML = 'latitude: ' + la + ', longitude: ' + lo;
-                        map.href = map.href + la + ',' + lo;
+            function createLi (key, value = 'uknown') {
+                const li = document.createElement('li')
+                li.innerText = `${key}: ${value}`
+                return li
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(
+                    function(position) {
+                        const lat = position.coords.latitude
+                        const lng = position.coords.longitude
+                        const heading = position.coords.heading
+
+                        const ul = document.createElement('ul')
+                        ul.appendChild(createLi('latitude', lat))
+                        ul.appendChild(createLi('longitude', lng))
+                        ul.appendChild(createLi('heading', heading))
+                        divPos.innerHTML = ul.innerHTML
+
+                        map.href = url.replace('LAT', lat).replace('LNG', lng)
                     },
                     function(error) {
-                        console.log('error', error);
-                        pos.innerHTML = 'Error:' + JSON.stringify(error);
-                    } 
-                );
+                        console.log('error', error)
+                        divPos.innerHTML = 'Error:' + JSON.stringify(error)
+                    }, 
+                    options)
             } else {
-                pos.innerHTML = 'geolocation is not supported';
+                divPos.innerHTML = 'geolocation is not supported'
             }
 
         }, false);
@@ -30,7 +54,7 @@
 </head>
 <body>
 <h1>Geolocation support</h1>
-<p>My guess is: <span id="position"></span>, <a href="http://maps.google.com/maps/api/staticmap?zoom=15&size=400x400&sensor=false&center=" id="map">map</a>.</p>
-<p style="color: green;">Working on Chrome 8+, Firefox 3.6+, iOS 3.2+</p>
+Position is: <div id="position">unknown</div>
+<p><a href="https://www.openstreetmap.org/" id="map">OSM map</a></p>
 </body>
 </html>

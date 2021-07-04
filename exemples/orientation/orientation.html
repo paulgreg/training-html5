@@ -8,29 +8,26 @@
 	</style>
 	<script>
     function orientationChange(obj) {
-		var orientation = document.getElementById('orientation');
+		var orientation = document.getElementById('orientation')
 
-		orientation.innerHTML = "don't know";
+		orientation.innerHTML = "don't know"
 
       if (window.orientation)
-        orientation.innerHTML = window.orientation + "°";
+        orientation.innerHTML = window.orientation + "°"
       else if (obj && obj.orientation)
-        orientation.innerHTML = obj.orientation + "°";
+        orientation.innerHTML = obj.orientation + "°"
       else if (obj && obj.x) 
-        orientation.innerHTML = "x:" + obj.x + " y:" + obj.y + " z:" + obj.z;
+        orientation.innerHTML = "x:" + obj.x + " y:" + obj.y + " z:" + obj.z
     }
 
 	window.addEventListener("load", function() {
-		document.addEventListener("MozOrientation", orientationChange);
-		document.addEventListener("orientationchange", orientationChange);
-
-		orientationChange();
+		document.addEventListener("orientationchange", orientationChange)
+		orientationChange()
 	}, false);
 	</script>
 </head>
 <body>
 	<h1>Orientation exemple</h1>
 	<p>Orientation is <span id="orientation"></span></p>
-	<p style="color: green;">Working on iOS 4.2</p>
 </body>
 </html>
